@@ -31,6 +31,9 @@ import {getSocket} from './src/redux/socketSlice';
 import ForgotPassword from './src/screens/Auth/ForgotPassword/ForgotPassword';
 import SendOTP from './src/screens/Auth/ForgotPassword/SendOTP';
 import ChangePassword from './src/screens/Auth/ForgotPassword/ChangePassword';
+import Story from './src/components/Story/Story';
+import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
+import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
 
 const Tab = createBottomTabNavigator();
 
@@ -180,7 +183,7 @@ const Container = () => {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="ConversationSettings"
           component={ConversationSettings}
           options={{
@@ -200,7 +203,7 @@ const Container = () => {
           options={{
             headerShown: false,
           }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { colors } from '../../../../theme/colors';
+import {StyleSheet} from 'react-native';
+import {colors} from '../../../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   backIcon: {
-    height: 38, 
+    height: 38,
     width: 38,
     color: colors.mainColor,
     marginLeft: 8,
@@ -58,15 +58,16 @@ export const styles = StyleSheet.create({
   header_avatarIcon: {
     width: 30,
     height: 30,
-    borderRadius: 10,
+    borderRadius: 1000,
     marginLeft: 16,
     marginRight: 8,
+    alignSelf: 'center',
   },
   header_actions: {
     flex: 1.2,
     display: 'flex',
     flexDirection: 'row',
-    alignItems: "center",
+    alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     marginRight: 23,
@@ -84,7 +85,7 @@ export const styles = StyleSheet.create({
     marginRight: 5,
   },
   preview: {
-    position: "absolute",
+    position: 'absolute',
     width: 100,
     height: 200,
     top: -210,
@@ -111,9 +112,9 @@ export const styles = StyleSheet.create({
   },
   previewSend: {
     width: 70,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: colors.mainColor,
     paddingVertical: 4,
     paddingHorizontal: 8,
@@ -126,6 +127,16 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.gray03,
     borderRadius: 19,
     height: 37,
+    position: 'relative',
+  },
+  emojiMart: {
+    position: 'absolute',
+    bottom: 55,
+    right: 0,
+    width: 250,
+    height: 250,
+    overflow: 'scroll',
+    backgroundColor: '#fff',
   },
   inputText: {
     flex: 1,
@@ -172,4 +183,4 @@ export const styles = StyleSheet.create({
     height: 24,
     width: 24,
   },
-})
+});

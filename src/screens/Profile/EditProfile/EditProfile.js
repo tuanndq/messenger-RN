@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -10,30 +10,28 @@ import {
   Button,
   TextInput,
   Alert,
-} from "react-native";
-import { CheckBox } from "react-native-elements";
-import { images } from "../../../images";
-import { styles } from "./EditProfile.styles";
-import { colors } from "../../../theme/colors";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react-native';
+import {CheckBox} from 'react-native-elements';
+import {images} from '../../../images';
+import {styles} from './EditProfile.styles';
+import {colors} from '../../../theme/colors';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 // import { editAttributeUser, upload } from "../../../redux/userSlice";
-import Modal from "react-native-modal";
-import UserPermissions from "../../../utils/UserPermissions";
-import * as ImagePicker from "expo-image-picker";
-import { Camera } from "expo-camera";
-import { getUsers, updateProfile } from "../../../redux/userSlice";
-import { uploadFile } from "../../../redux/uploadSlice";
+import Modal from 'react-native-modal';
+import UserPermissions from '../../../utils/UserPermissions';
+import {getUsers, updateProfile} from '../../../redux/userSlice';
+import {uploadFile} from '../../../redux/uploadSlice';
 
-const EditProfile = ({ navigation, route }) => {
-  const { user } = route.params;
+const EditProfile = ({navigation, route}) => {
+  const {user} = route.params;
   const dispatch = useDispatch();
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector(state => state.auth);
   const [infoTemp, setInfoTemp] = useState(user);
   const [info, setInfo] = useState(user);
   const [modalVisible, setModalVisible] = useState({
@@ -42,28 +40,28 @@ const EditProfile = ({ navigation, route }) => {
   });
 
   const handleData = (field, text) => {
-    setInfo({ ...info, [field]: text });
+    setInfo({...info, [field]: text});
   };
 
-  const handleSave = (fieldModal) => {
+  const handleSave = fieldModal => {
     setModalVisible(!modalVisible[fieldModal]);
   };
 
-  const setModal = (fieldModal) => {
+  const setModal = fieldModal => {
     setModalVisible({
       ...modalVisible,
       [fieldModal]: !modalVisible[fieldModal],
     });
   };
 
-  const handlePickerAvatar = async (type) => {
+  const handlePickerAvatar = async type => {
     UserPermissions.getCameraPermission();
 
     const resultPermision = await Camera.requestCameraPermissionsAsync();
     const resultPermisionCamera = resultPermision.status;
 
-    if (resultPermisionCamera === "denied") {
-      toastRef.current.show("Gallery permissions are needed");
+    if (resultPermisionCamera === 'denied') {
+      toastRef.current.show('Gallery permissions are needed');
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -74,11 +72,11 @@ const EditProfile = ({ navigation, route }) => {
       console.log(result);
 
       if (!result.cancelled) {
-        if (type === "avatar") {
-          setInfo({ ...info, avatar: result.uri });
+        if (type === 'avatar') {
+          setInfo({...info, avatar: result.uri});
           // dispatch(editAttributeUser({ type: "avatar", data: result.uri }));
-        } else if (type === "wallpaper") {
-          setInfo({ ...info, wallpaper: result.uri });
+        } else if (type === 'wallpaper') {
+          setInfo({...info, wallpaper: result.uri});
           // dispatch(editAttributeUser({ type: "wallpaper", data: result.uri }));
         }
       }
@@ -86,13 +84,13 @@ const EditProfile = ({ navigation, route }) => {
   };
 
   const onUpdatePress = async () => {
-    const newInfo = { ...info };
+    const newInfo = {...info};
     if (info.avatar !== user.avatar) {
-      newInfo.avatar = await uploadFile(info.avatar, "image", auth.token);
+      newInfo.avatar = await uploadFile(info.avatar, 'image', auth.token);
     }
 
     if (info.wallpaper !== user.wallpaper) {
-      newInfo.wallpaper = await uploadFile(info.wallpaper, "image", auth.token);
+      newInfo.wallpaper = await uploadFile(info.wallpaper, 'image', auth.token);
     }
 
     dispatch(
@@ -100,7 +98,7 @@ const EditProfile = ({ navigation, route }) => {
         userId: auth.id,
         profile: newInfo,
         token: auth.token,
-      })
+      }),
     );
   };
 
@@ -111,7 +109,7 @@ const EditProfile = ({ navigation, route }) => {
           <Ionicons
             name="arrow-back"
             style={styles.headerIcon}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate('Profile')}
           />
           <Text style={styles.headerText}>Edit Profile</Text>
           <TouchableOpacity onPress={onUpdatePress}>
@@ -125,13 +123,12 @@ const EditProfile = ({ navigation, route }) => {
 
             <Text
               style={styles.editText}
-              onPress={() => handlePickerAvatar("avatar")}
-            >
+              onPress={() => handlePickerAvatar('avatar')}>
               Edit
             </Text>
           </View>
           <Image
-            source={{ uri: info.avatar } || images.avatar}
+            source={{uri: info.avatar} || images.avatar}
             style={styles.profileAvatar}
           />
         </View>
@@ -141,13 +138,12 @@ const EditProfile = ({ navigation, route }) => {
             <Text style={styles.typeEditText}>Cover Photo</Text>
             <Text
               style={styles.editText}
-              onPress={() => handlePickerAvatar("wallpaper")}
-            >
+              onPress={() => handlePickerAvatar('wallpaper')}>
               Edit
             </Text>
           </View>
           <Image
-            source={{ uri: info.wallpaper } || images.wallpaper}
+            source={{uri: info.wallpaper} || images.wallpaper}
             style={styles.profileWallpaper}
           />
         </View>
@@ -156,7 +152,7 @@ const EditProfile = ({ navigation, route }) => {
           <View style={styles.typeEditContainer}>
             <Text style={styles.typeEditText}>Bio</Text>
 
-            <Text style={styles.editText} onPress={() => setModal("bio")}>
+            <Text style={styles.editText} onPress={() => setModal('bio')}>
               Edit
             </Text>
           </View>
@@ -168,14 +164,14 @@ const EditProfile = ({ navigation, route }) => {
           </View>
 
           <Modal isVisible={modalVisible.bio}>
-            <View style={{ ...styles.modalView, maxHeight: 250 }}>
+            <View style={{...styles.modalView, maxHeight: 250}}>
               <Text style={styles.modalTypeText}>Edit Bio</Text>
 
               <View style={styles.infoContainer}>
                 <View style={styles.infoItem}>
                   <TextInput
-                    onChangeText={(text) => handleData("bio", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('bio', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your bio..."
                     multiline
                     value={info.bio}
@@ -185,13 +181,12 @@ const EditProfile = ({ navigation, route }) => {
 
               <View style={styles.containerButton}>
                 <TouchableOpacity
-                  onPress={() => handleSave("bio")}
+                  onPress={() => handleSave('bio')}
                   style={{
                     ...styles.button,
                     backgroundColor: colors.mainColor,
-                  }}
-                >
-                  <Text style={{ color: colors.white, fontWeight: "500" }}>
+                  }}>
+                  <Text style={{color: colors.white, fontWeight: '500'}}>
                     Save
                   </Text>
                 </TouchableOpacity>
@@ -200,15 +195,13 @@ const EditProfile = ({ navigation, route }) => {
                   style={{
                     ...styles.button,
                     backgroundColor: colors.grayMain,
-                  }}
-                >
+                  }}>
                   <Text
                     onPress={() => {
-                      setModalVisible({ information: false });
+                      setModalVisible({information: false});
 
                       setInfo(infoTemp);
-                    }}
-                  >
+                    }}>
                     Cancel
                   </Text>
                 </TouchableOpacity>
@@ -223,8 +216,7 @@ const EditProfile = ({ navigation, route }) => {
 
             <Text
               style={styles.editText}
-              onPress={() => setModal("information")}
-            >
+              onPress={() => setModal('information')}>
               Edit
             </Text>
           </View>
@@ -267,15 +259,15 @@ const EditProfile = ({ navigation, route }) => {
           </View>
 
           <Modal isVisible={modalVisible.information}>
-            <View style={{ ...styles.modalView, maxHeight: 250 }}>
+            <View style={{...styles.modalView, maxHeight: 250}}>
               <Text style={styles.modalTypeText}>Edit Information</Text>
 
               <View style={styles.infoContainer}>
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>First Name:</Text>
                   <TextInput
-                    onChangeText={(text) => handleData("firstName", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('firstName', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your first name..."
                     value={info.firstName}
                   />
@@ -284,8 +276,8 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>Last Name:</Text>
                   <TextInput
-                    onChangeText={(text) => handleData("lastName", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('lastName', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your last name..."
                     value={info.lastName}
                   />
@@ -294,8 +286,8 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>Address:</Text>
                   <TextInput
-                    onChangeText={(text) => handleData("address", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('address', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your address..."
                     value={info.address}
                   />
@@ -304,8 +296,8 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>School:</Text>
                   <TextInput
-                    onChangeText={(text) => handleData("school", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('school', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your school..."
                     value={info.school}
                   />
@@ -314,8 +306,8 @@ const EditProfile = ({ navigation, route }) => {
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>Workplace:</Text>
                   <TextInput
-                    onChangeText={(text) => handleData("work", text)}
-                    style={{ ...styles.modalInput, height: 40, width: 180 }}
+                    onChangeText={text => handleData('work', text)}
+                    style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your workplace..."
                     value={info.work}
                   />
@@ -328,13 +320,12 @@ const EditProfile = ({ navigation, route }) => {
 
               <View style={styles.containerButton}>
                 <TouchableOpacity
-                  onPress={() => handleSave("information")}
+                  onPress={() => handleSave('information')}
                   style={{
                     ...styles.button,
                     backgroundColor: colors.mainColor,
-                  }}
-                >
-                  <Text style={{ color: colors.white, fontWeight: "500" }}>
+                  }}>
+                  <Text style={{color: colors.white, fontWeight: '500'}}>
                     Save
                   </Text>
                 </TouchableOpacity>
@@ -343,14 +334,12 @@ const EditProfile = ({ navigation, route }) => {
                   style={{
                     ...styles.button,
                     backgroundColor: colors.grayMain,
-                  }}
-                >
+                  }}>
                   <Text
                     onPress={() => {
-                      setModalVisible({ information: false });
+                      setModalVisible({information: false});
                       setInfo(infoTemp);
-                    }}
-                  >
+                    }}>
                     Cancel
                   </Text>
                 </TouchableOpacity>
