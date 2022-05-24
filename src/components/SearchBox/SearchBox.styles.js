@@ -11,17 +11,25 @@ export const styles = StyleSheet.create({
   contentContainer: {
     flexDirection: "row",
     backgroundColor: colors.gray01,
-    padding: 15,
+    padding: 10,
     marginHorizontal: 15,
-    borderRadius: 10,
+    borderRadius: 50,
+    display: 'flex',
+    alignItems: 'center',
+    height: 44,
   },
   searchIcon: {
     width: 16,
     height: 16,
     marginRight: 15,
+    marginLeft: 11,
   },
   containerSearch: {
     position: "absolute",
     flexDirection: "column",
+  },
+  searchInput: {
+    width: '100%',
+    fontSize: 15,
   },
 });

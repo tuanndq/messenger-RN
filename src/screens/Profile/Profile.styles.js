@@ -6,20 +6,25 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+
   coverPhoto: {
     width: "100%",
     height: 200,
   },
+  
   wallpaperContainer: {
     position: "relative",
   },
+  
   back: {
     position: "absolute",
     left: 10,
     top: 10,
-    fontSize: 24,
     zIndex: 999,
+    height: 39,
+    width: 39,
   },
+  
   cameraWallpaper: {
     position: "absolute",
     right: 20,
@@ -29,6 +34,7 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
     borderRadius: 10,
   },
+  
   dpContainer: {
     height: 200,
     width: 200,
@@ -40,6 +46,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 100,
   },
+  
   dpBlueRound: {
     height: "95%",
     width: "95%",
@@ -50,11 +57,13 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
   },
+  
   dp: {
     height: 170,
     width: 170,
     borderRadius: 200,
   },
+  
   activeNowTick: {
     height: 30,
     width: 30,
@@ -66,6 +75,7 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "white",
   },
+  
   cameraAvatar: {
     position: "absolute",
     bottom: 10,
@@ -76,17 +86,22 @@ export const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: "#fff",
   },
+  
   name: {
     alignSelf: "center",
     marginTop: 100,
     fontWeight: "bold",
     fontSize: 30,
+    color: 'black',
   },
+  
   shortBio: {
     alignSelf: "center",
     fontSize: 18,
     color: "gray",
+    // color: 'black',
   },
+  
   profileTabsContainer: {
     height: 100,
     marginTop: 10,
@@ -94,73 +109,95 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-around",
   },
+  
   tabContainer: {
     height: 95,
     width: 90,
     alignItems: "center",
     justifyContent: "center",
   },
+  
   tabImage: {
     fontSize: 25,
   },
+  
   tabImageContainer: {
-    backgroundColor: "lightgray",
+    // backgroundColor: "lightgray",
     height: 55,
     width: 55,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 60,
   },
+  
   tabText: {
     fontSize: 14,
     fontWeight: "bold",
     marginTop: 5,
+    color: 'black'
   },
+  
   aboutContainer: {
     marginTop: 15,
   },
+  
   containerSchool: {
     display: "flex",
   },
+  
   aboutItem: {
     flexDirection: "row",
     flexWrap: "wrap",
     marginHorizontal: 10,
     marginVertical: 5,
   },
+  
   iconAbout: {
     fontSize: 18,
     flex: 1,
   },
+  
   containerText: {
     flex: 10,
   },
+  
   normalText: {
     fontSize: 18,
   },
+  
   boldText: {
     fontSize: 18,
     fontWeight: "bold",
   },
+  
   infoContainer: {
     marginTop: 20,
   },
+  
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginVertical: 5,
     marginLeft: 20,
   },
+  
   icon: {
     marginRight: 20,
     fontSize: 22,
   },
+  
   text: {
     fontSize: 16,
     flexDirection: "row",
   },
+  
   valueText: {
     fontSize: 16,
     fontWeight: 500,
+  },
+
+  icon_profile: {
+    width: 33,
+    height: 33,
   },
 });

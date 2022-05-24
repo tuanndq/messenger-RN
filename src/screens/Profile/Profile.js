@@ -43,11 +43,17 @@ const Profile = ({ navigation, route }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.wallpaperContainer}>
-        <Ionicons
-          name="arrow-back"
+
+        {/* a.k.a back button */}
+        <Image
+          source={images.back_profile}
           style={styles.back}
-          onPress={() => navigation.navigate("Chats")}
+          onPress={() => {
+            navigation.navigate("Chats");
+            console.log('alo');
+          }}
         />
+
         <Image
           source={{ uri: user.wallpaper } || images.wallpaper}
           style={styles.coverPhoto}
@@ -78,10 +84,11 @@ const Profile = ({ navigation, route }) => {
       <Text style={styles.shortBio}>{user.bio}</Text>
 
       <View style={styles.profileTabsContainer}>
+
         {/* Add Story button */}
         <View style={styles.tabContainer}>
           <View style={styles.tabImageContainer}>
-            <Icon name="plus" style={styles.tabImage} />
+            <Image source={images.add_story} style={styles.icon_profile} />
           </View>
           <Text style={styles.tabText}>Add Story</Text>
         </View>
@@ -96,10 +103,7 @@ const Profile = ({ navigation, route }) => {
           }}
         >
           <View style={styles.tabImageContainer}>
-            <Icon
-              name="user-edit"
-              style={{ ...styles.tabImage, marginLeft: 7 }}
-            />
+            <Image source={images.edit_button} style={styles.icon_profile} />
           </View>
           <Text style={styles.tabText}>Edit Profile</Text>
         </TouchableOpacity>
@@ -114,7 +118,7 @@ const Profile = ({ navigation, route }) => {
         >
           <View style={styles.tabContainer}>
             <View style={styles.tabImageContainer}>
-              <Entypo name="message" style={styles.tabImage} />
+              <Image source={images.message_button} style={styles.icon_profile} />
             </View>
             <Text style={styles.tabText}>Message</Text>
           </View>
@@ -123,7 +127,10 @@ const Profile = ({ navigation, route }) => {
         {/* More Options button */}
         <View style={styles.tabContainer}>
           <View style={styles.tabImageContainer}>
-            <Feather name="more-horizontal" style={styles.tabImage} />
+            <Image source={images.more_icon} style={{
+              width: 26,
+              height: 26,
+            }} />
           </View>
           <Text style={styles.tabText}>More</Text>
         </View>
@@ -136,6 +143,7 @@ const Profile = ({ navigation, route }) => {
             marginBottom: 10,
             fontWeight: "bold",
             fontSize: 24,
+            color: 'black',
           }}
         >
           Information
