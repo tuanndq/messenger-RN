@@ -10,13 +10,18 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {colors} from '../../theme/colors';
 import {styles} from './Camera.styles';
 
-export default function CameraScreen({navigation, route}) {
-  const {setImage, setVideoUri} = route.params;
+export default function CameraScreen({
+  navigation,
+  route,
+  setImage,
+  setVideoUri,
+}) {
+  // const {setImage, setVideoUri} = route.params;
 
   const [hasPermission, setHasPermission] = useState(null);
-  // const [type, setType] = useState(Camera.Constants.Type.back);
+  const [type, setType] = useState(RNCamera.Constants.Type.back);
   const [isRatioSet, setIsRatioSet] = useState(false);
-  const [camera, setCamera] = useState({});
+  const [camera, setCamera] = useState(null);
   const [recording, setRecording] = useState(false);
 
   // useEffect(() => {
@@ -26,16 +31,18 @@ export default function CameraScreen({navigation, route}) {
   //   })();
   // }, []);
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
 
-  const takePicture = () => {
+  const takePicture = async () => {
     if (camera) {
-      camera.takePictureAsync({onPictureSaved: onPictureSaved});
+      const options = {quality: 0.5, base64: true};
+      const data = await camera.takePictureAsync(options);
+      onPictureSaved(data);
     }
   };
 
@@ -62,7 +69,7 @@ export default function CameraScreen({navigation, route}) {
     <View style={styles.container}>
       <RNCamera
         style={styles.camera}
-        type={type}
+        type={'Back'}
         ref={ref => setCamera(ref)}
         ratio={'18:9'}>
         <View style={styles.headerButton}>
@@ -72,11 +79,13 @@ export default function CameraScreen({navigation, route}) {
         </View>
 
         <View style={styles.buttonContainer}>
-          {/* <View style={styles.button}>
+          <View style={styles.button}>
             <TouchableOpacity
               onPress={() => {
                 setType(
-                  'Back'
+                  type === RNCamera.Constants.Type.back
+                    ? RNCamera.Constants.Type.front
+                    : RNCamera.Constants.Type.back,
                 );
               }}>
               <MaterialIcons
@@ -84,7 +93,8 @@ export default function CameraScreen({navigation, route}) {
                 style={styles.buttonIcon}
               />
             </TouchableOpacity>
-          </View> */}
+          </View>
+
           <View style={styles.button}>
             <TouchableOpacity onPress={takePicture}>
               <Ionicons name="radio-button-on" style={styles.buttonIcon} />
