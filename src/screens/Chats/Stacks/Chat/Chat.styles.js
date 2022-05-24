@@ -4,22 +4,51 @@ import { colors } from '../../../../theme/colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 24,
+    marginTop: 4,
+    color: '#ffffff',
   },
-  icon: {
-    fontSize: 28,
+  iconHeader: {
+    fontSize: 21,
     color: colors.mainColor,
   },
+
+  iconPhone: {
+    height: 34,
+    width: 36,
+  },
+
+  iconVideoCall: {
+    height: 48,
+    width: 48,
+    marginLeft: 12,
+  },
+
+  iconFooter: {
+    fontSize: 21,
+    color: colors.mainColor,
+    marginRight: 6,
+    marginLeft: 6,
+  },
+
+  iconEmoji: {
+    fontSize: 21,
+    color: colors.mainColor,
+  },
+
   header: {
     flex: 1,
     flexDirection: 'row',
-    paddingVertical: 8,
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    paddingVertical: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.07)',
+    borderBottomWidth: 1,
   },
   backIcon: {
-    fontSize: 40,
+    height: 38, 
+    width: 38,
     color: colors.mainColor,
+    marginLeft: 8,
   },
   headerInfo: {
     flex: 4,
@@ -35,18 +64,24 @@ export const styles = StyleSheet.create({
   },
   header_actions: {
     flex: 1.2,
+    display: 'flex',
     flexDirection: 'row',
+    alignItems: "center",
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    marginRight: 23,
   },
   body: {
     flex: 11,
+    marginLeft: 8,
   },
   footer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginLeft: 5,
+    marginRight: 5,
   },
   preview: {
     position: "absolute",
@@ -87,16 +122,54 @@ export const styles = StyleSheet.create({
   input: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: colors.gray02,
-    borderRadius: 16,
+    alignItems: 'center',
+    backgroundColor: colors.gray03,
+    borderRadius: 19,
+    height: 37,
   },
   inputText: {
     flex: 1,
-    paddingLeft: 8,
-    color: colors.white,
+    paddingLeft: 11,
+    color: colors.zblack,
     fontSize: 16,
   },
   inputEmoji: {
     padding: 4,
+    paddingRight: 9,
+  },
+
+  four_points: {
+    height: 23,
+    width: 23,
+  },
+
+  camera_button: {
+    height: 23,
+    width: 23,
+  },
+
+  image_button: {
+    height: 23,
+    width: 23,
+  },
+
+  mic_button: {
+    height: 22,
+    width: 22,
+  },
+
+  like_button: {
+    height: 37,
+    width: 37,
+  },
+
+  send_button: {
+    height: 20,
+    width: 20,
+  },
+
+  emoji_button: {
+    height: 24,
+    width: 24,
   },
 })

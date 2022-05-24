@@ -3,6 +3,7 @@ export const colors = {
   white: "white",
   gray01: "rgba(0, 0, 0, 0.05)",
   gray02: "#8E8E93",
+  gray03: '#e4e4e4',
   grayMain: "#dfe3ee",
   green01: "#C7F0BB",
   green02: "#56953e",

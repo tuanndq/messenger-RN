@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { colors } from "../../theme/colors";
+import React from 'react';
+import {StyleSheet} from 'react-native';
+import {colors} from '../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,17 +18,17 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     margin: 20,
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   button: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: 10
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
   },
   buttonIcon: {
     fontSize: 50,
-    color: colors.white
-  }
+    color: colors.white,
+  },
 });
