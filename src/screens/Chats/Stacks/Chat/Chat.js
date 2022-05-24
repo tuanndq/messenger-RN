@@ -110,6 +110,14 @@ const Chat = ({navigation}) => {
     };
   }, [socket, messageList]);
 
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      image,
+      setImage,
+      setVideoUri,
+    });
+  }, [navigation, image]);
+
   const pickImage = async () => {
     // let result = await ImagePicker.launchImageLibraryAsync({
     //   mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -281,14 +289,7 @@ const Chat = ({navigation}) => {
         </TouchableOpacity>
 
         {/* Camera button */}
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('Camera', {
-              image,
-              setImage,
-              setVideoUri,
-            })
-          }>
+        <TouchableOpacity onPress={() => navigation.navigate('Camera')}>
           <FontAwesome name="camera" style={styles.icon} />
         </TouchableOpacity>
 
