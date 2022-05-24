@@ -2,18 +2,19 @@ import {
   configureStore,
   applyMiddleware,
   getDefaultMiddleware,
-} from "@reduxjs/toolkit";
-import { combineReducers } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import userSlice from "./userSlice";
-import themeSlice from "./themeSlice";
-import authSlice from "./authSlice";
-import storySlice from "./storySlice";
-import uploadSlice from "./uploadSlice";
-import messageSlice from "./messageSlice";
-import conversationSlice from "./conversationSlice";
-import socketSlice from "./socketSlice";
-
+} from '@reduxjs/toolkit';
+import {combineReducers} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
+import userSlice from './userSlice';
+import themeSlice from './themeSlice';
+import authSlice from './authSlice';
+import storySlice from './storySlice';
+import uploadSlice from './uploadSlice';
+import messageSlice from './messageSlice';
+import conversationSlice from './conversationSlice';
+import socketSlice from './socketSlice';
+import videoSlice from './videoSlice';
+import alertSlice from './alertSlice';
 const composedEnhancers = composeWithDevTools();
 
 const rootReducer = combineReducers({
@@ -25,12 +26,14 @@ const rootReducer = combineReducers({
   message: messageSlice,
   conversation: conversationSlice,
   socket: socketSlice,
+  video: videoSlice,
+  alert: alertSlice,
 });
 
 const store = configureStore({
   reducer: rootReducer,
   composedEnhancers,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),

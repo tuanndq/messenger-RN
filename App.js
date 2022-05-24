@@ -28,6 +28,9 @@ import {isAuthenticated} from './src/redux/authSlice';
 import {getUserInfo, getUsers} from './src/redux/userSlice';
 import {SOCKER_SERVER_URL} from './src/utils/ip';
 import {getSocket} from './src/redux/socketSlice';
+import ForgotPassword from './src/screens/Auth/ForgotPassword/ForgotPassword';
+import SendOTP from './src/screens/Auth/ForgotPassword/SendOTP';
+import ChangePassword from './src/screens/Auth/ForgotPassword/ChangePassword';
 
 const Tab = createBottomTabNavigator();
 
@@ -124,6 +127,27 @@ const Container = () => {
         <Stack.Screen
           name="Home"
           component={auth.token ? Home : LogIn}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SendOTP"
+          component={SendOTP}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="ChangePassword"
+          component={ChangePassword}
           options={{
             headerShown: false,
           }}

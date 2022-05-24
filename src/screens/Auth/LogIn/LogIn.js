@@ -8,7 +8,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {colors} from '../../../theme/colors';
 import {login} from '../../../redux/authSlice';
 import {useEffect} from 'react';
-import {fetchConversations} from '../../../redux/conversationSlice';
 
 const LogIn = ({navigation}) => {
   const dispatch = useDispatch();
@@ -27,7 +26,9 @@ const LogIn = ({navigation}) => {
     }
   }, [auth]);
 
-  const onForgotPasswordPressed = () => {};
+  const onForgotPasswordPressed = () => {
+    navigation.navigate('ForgotPassword');
+  };
 
   const onSignInFacebook = () => {};
 
