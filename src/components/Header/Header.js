@@ -42,10 +42,14 @@ const Header = ({ heading, icon1, icon2, navigation, loggedUser }) => {
         <Text style={styles.title}>{heading}</Text>
       </View>
       <View style={styles.row}>
+
+        {/* a.k.a Logout button */}
         <TouchableOpacity onPress={handleLogout}>
-          <MaterialIcons name="logout" style={{ fontSize: 26 }} />
+          {/* <MaterialIcons name="logout" style={{ fontSize: 26, marginRight: 12, }} /> */}
+          <Image style={styles.iconLogout} source={images.logout} />
         </TouchableOpacity>
-        <Image style={styles.icon} source={icon1} />
+
+        <Image style={styles.iconCam} source={icon1} />
         <Image style={styles.icon} source={icon2} />
       </View>
     </View>
