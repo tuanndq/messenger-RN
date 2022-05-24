@@ -58,4 +58,9 @@ export const images = {
   emoji_button: require('./images/emoji_icon.png'),
   like_button: require('./images/like_button.png'),
   send_button: require('./images/send_button.png'),
+  message_button: require('./images/message_button.png'),
+  add_story: require('./images/add_story.png'),
+  edit_button: require('./images/edit_button.png'),
+  more_icon: require('./images/more_icon.png'),
+  back_profile: require('./images/back_profile.png'),
 };
