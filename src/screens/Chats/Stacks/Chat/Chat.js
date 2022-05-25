@@ -16,7 +16,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import EmojiSelector from 'react-native-emoji-selector';
 
 // import * as ImagePicker from "expo-image-picker";
-// import { Video } from "expo-av";
+import {launchImageLibrary} from 'react-native-image-picker';
+import Video from 'react-native-video';
 
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -41,6 +42,7 @@ const Chat = ({navigation}) => {
   const [videoUri, setVideoUri] = useState(null);
   const [showEmoji, setShowEmoji] = useState(false);
   const video = useRef(null);
+  const scrollViewRef = useRef();
 
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
@@ -120,33 +122,22 @@ const Chat = ({navigation}) => {
     setText(appendEmoji);
   };
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      image,
-      setImage,
-      setVideoUri,
-    });
-  }, [navigation, image]);
-
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    const result = await launchImageLibrary({});
 
-    if (!result.cancelled) {
-      setImage(result.uri);
-      console.log(result.uri);
+    const uri = result.assets[0].uri;
+
+    if (!result.didCancel) {
+      setImage(uri);
+      console.log(uri);
     }
   };
 
   const onSendImage = async () => {
-    const imageUrl = await uploadFile(image, 'image', token);
+    const tempImage = image;
+    setImage(null);
 
-    // console.log("Image uri: ", image);
-    // console.log(imageUrl);
+    const imageUrl = await uploadFile(tempImage, 'image', token);
 
     const messageData = {
       room: current_conversation._id,
@@ -163,12 +154,13 @@ const Chat = ({navigation}) => {
 
     socket.emit('send_message', messageData);
     setMessageList([...messageList, messageData]);
-
-    setImage(null);
   };
 
   const onSendVideo = async () => {
-    const videoUrl = await uploadFile(videoUri, 'video', token);
+    const tempVideoUri = videoUri;
+    setVideoUri(null);
+
+    const videoUrl = await uploadFile(tempVideoUri, 'video', token);
 
     const messageData = {
       room: current_conversation._id,
@@ -185,8 +177,6 @@ const Chat = ({navigation}) => {
 
     socket.emit('send_message', messageData);
     setMessageList([...messageList, messageData]);
-
-    setVideoUri(null);
   };
 
   return (
@@ -254,7 +244,12 @@ const Chat = ({navigation}) => {
       {/* style={[styles.message, username === messageContent.userName ? "you" : "other"]} */}
       {/* Body a.k.a List of messages */}
       <View style={styles.body}>
-        <ScrollView style={styles.messageContainer}>
+        <ScrollView
+          style={styles.messageContainer}
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({animated: true})
+          }>
           {messageList.map((messageContent, index) =>
             messageContent.idUser === auth.id ? (
               <RightMessage
@@ -276,24 +271,6 @@ const Chat = ({navigation}) => {
               />
             ),
           )}
-
-          {/* {currentMessages.messages.foreach((msg, index) => {
-            console.log(msg);
-
-            return (
-              <View key={index}>
-                <View>
-                  <View style={styles.msg}>
-                    <Text>{msg.content}</Text>
-                  </View>
-                  <View style={styles.messageMeta}>
-                    <Text style={styles.time}>{msg.createdAt}</Text>
-                    <Text style={styles.userName}>{msg.userName}</Text>
-                  </View>
-                </View>
-              </View>
-            );
-          })} */}
         </ScrollView>
       </View>
 
@@ -305,7 +282,12 @@ const Chat = ({navigation}) => {
 
         {/* Camera button */}
         <TouchableOpacity
-          onPress={() => navigation.navigate('Camera')}
+          onPress={() =>
+            navigation.navigate('Camera', {
+              setImage,
+              setVideoUri,
+            })
+          }
           style={styles.iconFooter}>
           <Image source={images.camera_button} style={styles.camera_button} />
         </TouchableOpacity>
@@ -349,15 +331,18 @@ const Chat = ({navigation}) => {
         )}
 
         {/* a.k.a Like button */}
-        <TouchableOpacity style={styles.iconFooter}>
-          <Image source={images.like_button} style={styles.like_button} />
-        </TouchableOpacity>
+        {text === '' && (
+          <TouchableOpacity style={styles.iconFooter}>
+            <Image source={images.like_button} style={styles.like_button} />
+          </TouchableOpacity>
+        )}
 
         {/* a.k.a Send button */}
-        <TouchableOpacity onPress={sendMessage} style={styles.iconFooter}>
-          <Image source={images.send_button} style={styles.send_button} />
-        </TouchableOpacity>
-
+        {text !== '' && (
+          <TouchableOpacity onPress={sendMessage} style={styles.iconFooter}>
+            <Image source={images.send_button} style={styles.send_button} />
+          </TouchableOpacity>
+        )}
         {/* ... */}
         {image && (
           <View style={styles.preview}>
@@ -400,9 +385,9 @@ const Chat = ({navigation}) => {
               source={{
                 uri: videoUri,
               }}
-              useNativeControls
-              resizeMode="contain"
-              isLooping
+              // useNativeControls
+              // resizeMode="contain"
+              // isLooping
             />
             <TouchableOpacity style={styles.previewSend} onPress={onSendVideo}>
               <Text style={{color: colors.white}}>Send</Text>

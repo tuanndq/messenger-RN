@@ -21,6 +21,8 @@ target 'messenger' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-video', :path => '../node_modules/react-native-video'
+
   target 'messengerTests' do
     inherit! :complete
     # Pods for testing
