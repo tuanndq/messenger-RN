@@ -15,7 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 // import * as ImagePicker from "expo-image-picker";
-// import { Video } from "expo-av";
+import Video from 'react-native-video'
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -113,13 +113,13 @@ const Chat = ({ navigation }) => {
     }
   }, [socket, messageList]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      image,
-      setImage,
-      setVideoUri,
-    });
-  }, [navigation, image]);
+  // React.useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     image,
+  //     setImage,
+  //     setVideoUri,
+  //   });
+  // }, [navigation, image]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -300,7 +300,11 @@ const Chat = ({ navigation }) => {
         {/* Camera button */}
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("Camera")
+            navigation.navigate("Camera", {
+              image,
+              setImage,
+              setVideoUri
+            })
           }
           style={styles.iconFooter}
         >
@@ -385,9 +389,9 @@ const Chat = ({ navigation }) => {
               source={{
                 uri: videoUri,
               }}
-              useNativeControls
-              resizeMode="contain"
-              isLooping
+              // useNativeControls
+              // resizeMode="contain"
+              // isLooping
             />
             <TouchableOpacity style={styles.previewSend} onPress={onSendVideo}>
               <Text style={{ color: colors.white }}>Send</Text>
