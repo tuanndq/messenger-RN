@@ -313,7 +313,6 @@ const Chat = ({navigation}) => {
             })
           }
           style={styles.iconFooter}
-          // onPress={() => navigation.navigate('Camera')}
         >
           <Image source={images.camera_button} style={styles.camera_button} />
         </TouchableOpacity>

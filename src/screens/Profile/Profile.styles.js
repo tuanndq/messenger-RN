@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
     left: 10,
     top: 10,
     zIndex: 999,
-    fontSize: 24,
+    fontSize: 29,
+    color: colors.blackApp,
   },
 
   cameraWallpaper: {

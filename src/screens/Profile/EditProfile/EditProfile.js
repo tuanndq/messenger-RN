@@ -105,18 +105,23 @@ const EditProfile = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
+
+        {/* a.k.a header of edit profile */}
         <View style={styles.headerEdit}>
           <Ionicons
             name="arrow-back"
             style={styles.headerIcon}
             onPress={() => navigation.navigate('Profile')}
           />
+
           <Text style={styles.headerText}>Edit Profile</Text>
-          <TouchableOpacity onPress={onUpdatePress}>
-            <Text>Save</Text>
+          
+          <TouchableOpacity onPress={onUpdatePress} style={styles.saveButton}>
+            <Text style={styles.textSaveButton}>Save</Text>
           </TouchableOpacity>
         </View>
 
+        {/* a.k.a body of edit profile */}
         <View style={styles.editContainer}>
           <View style={styles.typeEditContainer}>
             <Text style={styles.typeEditText}>Profile Picture</Text>
@@ -164,14 +169,14 @@ const EditProfile = ({navigation, route}) => {
           </View>
 
           <Modal isVisible={modalVisible.bio}>
-            <View style={{...styles.modalView, maxHeight: 250}}>
+            <View style={styles.modalViewBio}>
               <Text style={styles.modalTypeText}>Edit Bio</Text>
 
               <View style={styles.infoContainer}>
                 <View style={styles.infoItem}>
                   <TextInput
                     onChangeText={text => handleData('bio', text)}
-                    style={{...styles.modalInput, height: 40, width: 180}}
+                    style={styles.modalInput}
                     placeholder="Input your bio..."
                     multiline
                     value={info.bio}
@@ -259,7 +264,7 @@ const EditProfile = ({navigation, route}) => {
           </View>
 
           <Modal isVisible={modalVisible.information}>
-            <View style={{...styles.modalView, maxHeight: 250}}>
+            <View style={styles.modalViewInfo}>
               <Text style={styles.modalTypeText}>Edit Information</Text>
 
               <View style={styles.infoContainer}>
