@@ -1,19 +1,18 @@
-import { Text, TouchableOpacity, Image } from "react-native";
-import React from "react";
-import { styles } from "./UserCard.styles";
+import {Text, TouchableOpacity, Image} from 'react-native';
+import React from 'react';
+import {styles} from './UserCard.styles';
 
-const UserCard = ({ user, navigation, setSearch }) => {
+const UserCard = ({user, navigation, setSearch}) => {
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() => {
-        navigation.navigate("Profile", {
+        navigation.navigate('Profile', {
           otherUser: user,
         });
-        setSearch("");
-      }}
-    >
-      <Image source={user.avatar} style={styles.userAvatar} />
+        setSearch('');
+      }}>
+      <Image source={{uri: user.avatar}} style={styles.userAvatar} />
 
       <Text style={styles.userName}>{user.fullName}</Text>
     </TouchableOpacity>

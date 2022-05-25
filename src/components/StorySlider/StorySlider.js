@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {images} from '../../images';
 import {styles} from './StorySlider.styles';
 // import UserPermissions from "../../utils/UserPermissions";
+import Feather from 'react-native-vector-icons/Feather';
 // import * as ImagePicker from "expo-image-picker";
 // import { Camera } from "expo-camera";
 import {getStoriesExist} from '../../redux/storySlice';
@@ -73,11 +74,12 @@ const StorySlider = ({navigation, loggedUser}) => {
               })
             : handlePickerAvatar()
         }>
-        <Image
-          source={
-            loggedUser?.stories?.length > 0 ? images.avatar : images.your_story
-          }
-        />
+        {loggedUser?.stories?.length > 0 ? (
+          <Image source={{uri: loggedUser?.avatar}} />
+        ) : (
+          <Feather name="plus" />
+        )}
+
         <Text style={styles.userName}>Your Story</Text>
       </TouchableOpacity>
       <FlatList

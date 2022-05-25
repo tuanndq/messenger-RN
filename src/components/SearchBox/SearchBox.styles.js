@@ -1,15 +1,16 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from 'react-native';
 
-import { colors } from "../../theme/colors";
+import {colors} from '../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
-    display: "flex",
+    display: 'flex',
     backgroundColor: colors.white,
-    position: "relative",
+    position: 'relative',
+    zIndex: 99999,
   },
   contentContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
     backgroundColor: colors.gray01,
     padding: 10,
     marginHorizontal: 15,
@@ -25,11 +26,18 @@ export const styles = StyleSheet.create({
     marginLeft: 11,
   },
   containerSearch: {
-    position: "absolute",
-    flexDirection: "column",
+    position: 'absolute',
+    flexDirection: 'column',
   },
   searchInput: {
     width: '100%',
+    height: 50,
     fontSize: 15,
+  },
+  closeIcon: {
+    position: 'absolute',
+    zIndex: 99,
+    right: 15,
+    fontSize: 20,
   },
 });

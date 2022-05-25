@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -6,44 +6,46 @@ import {
   Image,
   TextInput,
   ScrollView,
-} from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import Entypo from "react-native-vector-icons/Entypo";
-import Feather from "react-native-vector-icons/Feather";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AntDesign from "react-native-vector-icons/AntDesign";
+} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import EmojiSelector from 'react-native-emoji-selector';
 
 // import * as ImagePicker from "expo-image-picker";
 import Video from 'react-native-video'
 
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from 'react-redux';
 
-import { styles } from "./Chat.styles";
-import { colors } from "../../../../theme/colors";
-import { images } from "../../../../images";
+import {styles} from './Chat.styles';
+import {colors} from '../../../../theme/colors';
+import {images} from '../../../../images';
 
-import { LeftMessage, RightMessage } from "../Message/Message";
-import Story from "../../../../components/Story/Story";
+import {LeftMessage, RightMessage} from '../Message/Message';
+import Story from '../../../../components/Story/Story';
 
-import { uploadFile } from "../../../../redux/uploadSlice";
+import {uploadFile} from '../../../../redux/uploadSlice';
 import {
   fetchCurrentMessages,
   fetchSendMessage,
-} from "../../../../redux/messageSlice";
-import { enumMessenger } from "../../../../utils/enum";
+} from '../../../../redux/messageSlice';
+import {enumMessenger} from '../../../../utils/enum';
 
-const Chat = ({ navigation }) => {
+const Chat = ({navigation}) => {
   const [messageList, setMessageList] = useState([]);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
   const [image, setImage] = useState(null);
   const [videoUri, setVideoUri] = useState(null);
+  const [showEmoji, setShowEmoji] = useState(false);
   const video = useRef(null);
 
-  const auth = useSelector((state) => state.auth);
-  const users = useSelector((state) => state.user.users);
+  const auth = useSelector(state => state.auth);
+  const users = useSelector(state => state.user.users);
   const current_conversation = useSelector(
-    (state) => state.conversation.current_conversation
+    state => state.conversation.current_conversation,
   );
   // const currentMessages = useSelector(
   //   (state) => state.message.currentMessages.messages
@@ -51,18 +53,18 @@ const Chat = ({ navigation }) => {
 
   // console.log("Message list: ", messageList);
 
-  const { socket } = useSelector((state) => state.socket);
-  const { token } = useSelector((state) => state.auth);
+  const {socket} = useSelector(state => state.socket);
+  const {token} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const sendUser = useMemo(() => {
-    const user = users.find(user => user._id === auth.id)
+    const user = users.find(user => user._id === auth.id);
 
-    return user
-  }, [users, auth])
+    return user;
+  }, [users, auth]);
 
   const sendMessage = () => {
-    if (text !== "") {
+    if (text !== '') {
       const messageData = {
         room: current_conversation._id,
         userName: sendUser.firstName,
@@ -72,13 +74,13 @@ const Chat = ({ navigation }) => {
         message: text,
         time:
           new Date(Date.now()).getHours() +
-          ":" +
+          ':' +
           new Date(Date.now()).getMinutes(),
       };
 
-      socket.emit("send_message", messageData);
+      socket.emit('send_message', messageData);
       setMessageList([...messageList, messageData]);
-      setText("");
+      setText('');
     }
 
     // if (text !== "") {
@@ -99,27 +101,32 @@ const Chat = ({ navigation }) => {
   // }, [socket, messageList]);
 
   useEffect(() => {
-    const handler = (data) => {
+    const handler = data => {
       if (Array.isArray(data)) {
         setMessageList([...messageList, ...data]);
       } else {
         setMessageList([...messageList, data]);
       }
-    }
-    socket.on("receive_message", handler);
+    };
+    socket.on('receive_message', handler);
 
     return () => {
-      socket.off('receive_message', handler)
-    }
+      socket.off('receive_message', handler);
+    };
   }, [socket, messageList]);
 
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     image,
-  //     setImage,
-  //     setVideoUri,
-  //   });
-  // }, [navigation, image]);
+  const handleText = emoji => {
+    const appendEmoji = text + emoji;
+    setText(appendEmoji);
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      image,
+      setImage,
+      setVideoUri,
+    });
+  }, [navigation, image]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -136,7 +143,7 @@ const Chat = ({ navigation }) => {
   };
 
   const onSendImage = async () => {
-    const imageUrl = await uploadFile(image, "image", token);
+    const imageUrl = await uploadFile(image, 'image', token);
 
     // console.log("Image uri: ", image);
     // console.log(imageUrl);
@@ -150,18 +157,18 @@ const Chat = ({ navigation }) => {
       message: imageUrl,
       time:
         new Date(Date.now()).getHours() +
-        ":" +
+        ':' +
         new Date(Date.now()).getMinutes(),
     };
 
-    socket.emit("send_message", messageData);
+    socket.emit('send_message', messageData);
     setMessageList([...messageList, messageData]);
 
     setImage(null);
   };
 
   const onSendVideo = async () => {
-    const videoUrl = await uploadFile(videoUri, "video", token);
+    const videoUrl = await uploadFile(videoUri, 'video', token);
 
     const messageData = {
       room: current_conversation._id,
@@ -172,11 +179,11 @@ const Chat = ({ navigation }) => {
       message: videoUrl,
       time:
         new Date(Date.now()).getHours() +
-        ":" +
+        ':' +
         new Date(Date.now()).getMinutes(),
     };
 
-    socket.emit("send_message", messageData);
+    socket.emit('send_message', messageData);
     setMessageList([...messageList, messageData]);
 
     setVideoUri(null);
@@ -190,9 +197,8 @@ const Chat = ({ navigation }) => {
         {/* Back to Chats list button */}
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Chats");
-          }}
-        >
+            navigation.navigate('Chats');
+          }}>
           {/* <Feather name="chevron-left" style={styles.backIcon} /> */}
           <Image source={images.backButton} style={styles.backIcon} />
         </TouchableOpacity>
@@ -201,26 +207,25 @@ const Chat = ({ navigation }) => {
         <View style={styles.headerInfo}>
           <TouchableOpacity
             activeOpacity={0.6}
-            style={{ flexDirection: "row" }}
+            style={{flexDirection: 'row'}}
             onPress={() => {
-              navigation.navigate("ConversationSettings", {
+              navigation.navigate('ConversationSettings', {
                 avatar: current_conversation.avatar,
                 userInfo: {
                   username: current_conversation.title,
-                  status: "Active",
+                  status: 'Active',
                 },
               });
-            }}
-          >
+            }}>
             <Image
-              source={current_conversation.avatar}
+              source={{uri: current_conversation.avatar}}
               style={styles.header_avatarIcon}
             />
             <View>
-              <Text style={{ fontSize: 16, fontWeight: "bold", color: 'black' }}>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'black'}}>
                 {current_conversation.title}
               </Text>
-              <Text style={{ fontSize: 12 }}>Status</Text>
+              <Text style={{fontSize: 12}}>Status</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -229,18 +234,19 @@ const Chat = ({ navigation }) => {
         <View style={styles.header_actions}>
           <TouchableOpacity
             onPress={() => {
-              console.log("Call pressed");
-            }}
-          >
+              console.log('Call pressed');
+            }}>
             <Image source={images.phone} style={styles.iconPhone} />
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => {
-              console.log("Video pressed");
-            }}
-          >
-            <Image source={images.video_call_chat} style={styles.iconVideoCall} />
+              console.log('Video pressed');
+            }}>
+            <Image
+              source={images.video_call_chat}
+              style={styles.iconVideoCall}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -268,7 +274,7 @@ const Chat = ({ navigation }) => {
                 userName={messageContent.userName}
                 avatar={messageContent.avatar}
               />
-            )
+            ),
           )}
 
           {/* {currentMessages.messages.foreach((msg, index) => {
@@ -307,6 +313,7 @@ const Chat = ({ navigation }) => {
             })
           }
           style={styles.iconFooter}
+          // onPress={() => navigation.navigate('Camera')}
         >
           <Image source={images.camera_button} style={styles.camera_button} />
         </TouchableOpacity>
@@ -328,12 +335,26 @@ const Chat = ({ navigation }) => {
             onChangeText={setText}
             value={text}
             placeholder="Aa"
-            placeholderTextColor={"#8E8E93"}
+            placeholderTextColor={'#8E8E93'}
           />
-          <TouchableOpacity style={styles.inputEmoji}>
+
+          <TouchableOpacity
+            style={styles.inputEmoji}
+            onPress={() => setShowEmoji(!showEmoji)}>
             <Image source={images.emoji_button} style={styles.emoji_button} />
           </TouchableOpacity>
         </View>
+
+        {showEmoji && (
+          <EmojiSelector
+            onEmojiSelected={emoji => handleText(emoji)}
+            showSearchBar={true}
+            showTabs={true}
+            showHistory={true}
+            showSectionTitles={true}
+            style={styles.emojiMart}
+          />
+        )}
 
         {/* a.k.a Like button */}
         <TouchableOpacity style={styles.iconFooter}>
@@ -350,22 +371,21 @@ const Chat = ({ navigation }) => {
           <View style={styles.preview}>
             <TouchableOpacity
               style={styles.previewClose}
-              onPress={() => setImage(null)}
-            >
+              onPress={() => setImage(null)}>
               <AntDesign
                 name="close"
-                style={{ color: colors.white, fontSize: 20 }}
+                style={{color: colors.white, fontSize: 20}}
               />
             </TouchableOpacity>
             <Image
-              source={{ uri: image } || images.avatar}
+              source={{uri: image} || images.avatar}
               style={styles.previewImg}
             />
             <TouchableOpacity style={styles.previewSend} onPress={onSendImage}>
-              <Text style={{ color: colors.white }}>Send</Text>
+              <Text style={{color: colors.white}}>Send</Text>
               <Ionicons
                 name="send"
-                style={{ color: colors.white, marginLeft: 4 }}
+                style={{color: colors.white, marginLeft: 4}}
               />
             </TouchableOpacity>
           </View>
@@ -376,11 +396,10 @@ const Chat = ({ navigation }) => {
           <View style={styles.preview}>
             <TouchableOpacity
               style={styles.previewClose}
-              onPress={() => setVideoUri(null)}
-            >
+              onPress={() => setVideoUri(null)}>
               <AntDesign
                 name="close"
-                style={{ color: colors.white, fontSize: 20 }}
+                style={{color: colors.white, fontSize: 20}}
               />
             </TouchableOpacity>
             <Video
@@ -394,10 +413,10 @@ const Chat = ({ navigation }) => {
               // isLooping
             />
             <TouchableOpacity style={styles.previewSend} onPress={onSendVideo}>
-              <Text style={{ color: colors.white }}>Send</Text>
+              <Text style={{color: colors.white}}>Send</Text>
               <Ionicons
                 name="send"
-                style={{ color: colors.white, marginLeft: 4 }}
+                style={{color: colors.white, marginLeft: 4}}
               />
             </TouchableOpacity>
           </View>
