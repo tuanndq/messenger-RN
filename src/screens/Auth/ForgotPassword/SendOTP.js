@@ -20,8 +20,16 @@ const SendOTP = ({route, navigation}) => {
     }
   };
   return (
-    <View>
-      <Text>
+    <View style={{
+      marginHorizontal: 17,
+      marginTop: 37
+    }}>
+      <Text style={{
+        marginLeft: 2,
+        marginBottom: 12,
+        fontWeight: '600',
+        fontSize: 16,
+      }}>
         Please check your email account for the verification code we just sent
         you and enter that code below
       </Text>

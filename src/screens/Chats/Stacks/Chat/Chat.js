@@ -385,9 +385,9 @@ const Chat = ({navigation}) => {
               source={{
                 uri: videoUri,
               }}
-              useNativeControls
-              resizeMode="contain"
-              isLooping
+              // useNativeControls
+              // resizeMode="contain"
+              // isLooping
             />
             <TouchableOpacity style={styles.previewSend} onPress={onSendVideo}>
               <Text style={{color: colors.white}}>Send</Text>

@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 50,
   },
+   
   headerEdit: {
     flexDirection: "row",
     paddingHorizontal: 10,
@@ -14,34 +15,55 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderBottomColor: colors.grayMain,
     alignItems: "center",
+    position: 'relative'
   },
+  
   headerIcon: {
     fontSize: 24,
+    color: colors.blackApp,
   },
+  
   headerText: {
     fontSize: 24,
     marginLeft: 10,
     fontWeight: "bold",
+    color: colors.blackApp,
   },
+
+  saveButton: {
+    position: 'absolute',
+    right: 13,
+  },
+
+  textSaveButton: {
+    color: colors.secondColor,
+    fontSize: 22,
+    fontWeight: '600',
+  },
+
   editContainer: {
     marginHorizontal: 15,
     marginVertical: 20,
     borderBottomWidth: 2,
     borderBottomColor: colors.grayMain,
   },
+
   typeEditContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+  
   typeEditText: {
     fontSize: 20,
     fontWeight: "bold",
   },
+  
   editText: {
     fontSize: 20,
     color: colors.secondColor,
   },
+  
   profileAvatar: {
     width: 150,
     height: 150,
@@ -101,26 +123,41 @@ export const styles = StyleSheet.create({
   textInfo: {
     fontSize: 18,
   },
-  modalView: {
+
+  modalViewBio: {
+    paddingTop: 20,
     flex: 1,
     backgroundColor: "#fff",
-    borderRadius: 10,
-    maxHeight: 300,
-    paddingHorizontal: 10,
+    borderRadius: 13,
+    maxHeight: 240,
   },
+
+  modalViewInfo: {
+    paddingTop: 20,
+    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 13,
+    maxHeight: 560,
+  },
+
   modalInput: {
-    height: 100,
+    height: 36,
+    width: '93%',
     margin: 12,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray04,
     padding: 10,
     color: "#000",
   },
+
   modalTypeText: {
     alignSelf: "center",
     marginTop: 10,
     fontSize: 20,
-    fontWeight: "500",
+    fontWeight: "600",
+    color: colors.blackApp,
   },
+  
   containerButton: {
     flexDirection: "row",
     alignItems: "center",

@@ -33,8 +33,16 @@ const ForgotPassword = ({navigation}) => {
     }
   };
   return (
-    <View>
-      <Text>Enter Your Account To Receive OTP</Text>
+    <View style={{
+      marginHorizontal: 17,
+      marginTop: 34
+    }}>
+      <Text style={{
+        marginBottom: 12,
+        marginLeft: 2,
+        fontWeight: '600',
+        fontSize: 16,
+      }}>Enter Your Account To Receive OTP</Text>
 
       <CustomInput
         placeholder={'Please enter your email'}
@@ -48,19 +56,5 @@ const ForgotPassword = ({navigation}) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 50,
-  },
-  bigBlue: {
-    color: 'blue',
-    fontWeight: 'bold',
-    fontSize: 30,
-  },
-  red: {
-    color: 'red',
-  },
-});
 
 export default ForgotPassword;
