@@ -4,10 +4,12 @@ export const colors = {
   gray01: "rgba(0, 0, 0, 0.05)",
   gray02: "#8E8E93",
   gray03: '#e4e4e4',
+  gray04: '#c4c4c4',
   grayMain: "#dfe3ee",
   green01: "#C7F0BB",
   green02: "#56953e",
   mainColor: "#1877f2",
   secondColor: "#4267B2",
   redColor: "#dd4d44",
+  blackApp: 'rgb(40, 40, 40)',
 };

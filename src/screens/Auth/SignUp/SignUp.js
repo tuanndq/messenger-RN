@@ -111,8 +111,11 @@ const SignUp = ({ navigation }) => {
         setValue={(text) => handleData("gender", text)}
       />
 
-      <View>
-        <Text style={{ marginVertical: 10 }}>
+      <View style={{
+        marginBottom: 80,
+        marginTop: 15,
+      }}>
+        <Text style={{ marginVertical: 10, marginBottom: 15, marginLeft: 3, }}>
           By choosing Sign Up, you agree to our{" "}
           <Text style={{ color: colors.mainColor }}>Terms, Data Policy</Text>.
           You may receive SMS notifications or email from us and can opt out at

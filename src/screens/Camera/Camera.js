@@ -13,10 +13,8 @@ import {styles} from './Camera.styles';
 export default function CameraScreen({
   navigation,
   route,
-  setImage,
-  setVideoUri,
 }) {
-  // const {setImage, setVideoUri} = route.params;
+  const {setImage, setVideoUri} = route.params;
 
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(RNCamera.Constants.Type.back);
@@ -53,16 +51,19 @@ export default function CameraScreen({
 
   const onVideoRecordPress = async () => {
     // await Audio.requestPermissionsAsync();
-    // if (!recording) {
-    //   setRecording(true);
-    //   let video = await camera.recordAsync();
-    //   setVideoUri(video.uri);
-    //   navigation.navigate('Chat');
-    // } else {
-    //   setRecording(false);
-    //   camera.stopRecording();
-    // }
-    // console.log('Is recording: ', recording);
+    if (!recording) {
+      setRecording(true);
+      let video = await camera.recordAsync({
+        quality: RNCamera.Constants.VideoQuality['720p'],
+      });
+      console.log(video.uri)
+      setVideoUri(video.uri);
+      navigation.navigate('Chat');
+    } else {
+      setRecording(false);
+      camera.stopRecording();
+    }
+    console.log(recording)
   };
 
   return (
@@ -101,7 +102,7 @@ export default function CameraScreen({
             </TouchableOpacity>
           </View>
           <View style={styles.button}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={onVideoRecordPress}>
               <AntDesign
                 name="videocamera"
                 style={{
