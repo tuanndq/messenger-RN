@@ -1,19 +1,20 @@
-import React, { useRef } from "react";
-import { View, Text, Image } from "react-native";
+import React, {useRef} from 'react';
+import {View, Text, Image} from 'react-native';
 
-// import { Video } from "expo-av";
+import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-controls';
 
-import { styles } from "./Message.styles";
-import { images } from "../../../../images";
-import { enumMessenger } from "../../../../utils/enum";
+import {styles} from './Message.styles';
+import {images} from '../../../../images';
+import {enumMessenger} from '../../../../utils/enum';
 
-export const LeftMessage = ({ type, message, time, userName, avatar }) => {
+export const LeftMessage = ({type, message, time, userName, avatar}) => {
   const video = useRef(null);
 
   return (
     <View style={styles.left_container}>
       <View style={styles.avatar}>
-        <Image source={{ uri: avatar }} style={styles.avatarImg} />
+        <Image source={{uri: avatar}} style={styles.avatarImg} />
       </View>
 
       {type === enumMessenger.msgType.text && (
@@ -28,21 +29,19 @@ export const LeftMessage = ({ type, message, time, userName, avatar }) => {
 
       {type === enumMessenger.msgType.image && (
         <View style={styles.image}>
-          <Image source={{ uri: message }} style={styles.imageMessage} />
+          <Image source={{uri: message}} style={styles.imageMessage} />
         </View>
       )}
 
       {type === enumMessenger.msgType.file && (
         <View style={styles.video}>
-          <Video
-            ref={video}
-            style={styles.videoMessage}
-            source={{
-              uri: message,
-            }}
-            useNativeControls
-            resizeMode="contain"
-            isLooping
+          <VideoPlayer
+            source={{uri: message}}
+            toggleResizeModeOnFullscreen={false}
+            showOnStart={true}
+            controlTimeout={999999}
+            disableBack
+            disableFullscreen
           />
         </View>
       )}
@@ -50,7 +49,7 @@ export const LeftMessage = ({ type, message, time, userName, avatar }) => {
   );
 };
 
-export const RightMessage = ({ type, message, time, userName, avatar }) => {
+export const RightMessage = ({type, message, time, userName, avatar}) => {
   const video = useRef(null);
 
   return (
@@ -69,21 +68,19 @@ export const RightMessage = ({ type, message, time, userName, avatar }) => {
 
           {type === enumMessenger.msgType.image && (
             <View style={styles.image}>
-              <Image source={{ uri: message }} style={styles.imageMessage} />
+              <Image source={{uri: message}} style={styles.imageMessage} />
             </View>
           )}
 
           {type === enumMessenger.msgType.file && (
             <View style={styles.video}>
-              <Video
-                ref={video}
-                style={styles.videoMessage}
-                source={{
-                  uri: message,
-                }}
-                useNativeControls
-                resizeMode="contain"
-                isLooping
+              <VideoPlayer
+                source={{uri: message}}
+                toggleResizeModeOnFullscreen={false}
+                showOnStart={true}
+                controlTimeout={999999}
+                disableBack
+                disableFullscreen
               />
             </View>
           )}

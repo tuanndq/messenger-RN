@@ -1,30 +1,30 @@
-import { StyleSheet } from "react-native";
-import { colors } from "../../../../theme/colors";
+import {StyleSheet} from 'react-native';
+import {colors} from '../../../../theme/colors';
 
 export const styles = StyleSheet.create({
   left_container: {
-    maxWidth: "80%",
-    flexDirection: "row",
+    maxWidth: '80%',
+    flexDirection: 'row',
     marginVertical: 2,
     // backgroundColor: colors.gray02,
   },
 
   right_container: {
-    width: "80%",
-    marginLeft: "auto",
+    width: '80%',
+    marginLeft: 'auto',
     marginVertical: 2,
   },
 
   containerRightContainer: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
 
   avatar: {
     marginRight: 5,
     marginLeft: 3,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
 
   avatarImg: {
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     paddingRight: 5,
     paddingLeft: 5,
   },
-  
+
   textValue: {
     color: colors.white,
     fontSize: 16,
@@ -57,18 +57,18 @@ export const styles = StyleSheet.create({
   },
 
   imageMessage: {
-    borderRadius: 19,
-    height: 180,
+    borderRadius: 14,
+    width: 200,
+    height: 300,
   },
 
   video: {
     flex: 1,
-    maxWidth: "70%",
-    maxHeight: 400,
   },
   videoMessage: {
+    borderRadius: 14,
     width: 200,
-    height: 200,
+    height: 300,
   },
 
   checkedIcon: {
