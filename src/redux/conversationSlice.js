@@ -1,6 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {postDataAPI, getDataAPI} from '../utils/fetchData';
 
+const defaultAvatarGroupChat = 'https://preview.redd.it/hz1l8524rqv61.png?width=2926&format=png&auto=webp&s=1a6a33e36e9b594fd6ed77ee3e9ad7794ae25d39';
+
 const conversationSlice = createSlice({
   name: 'conversation',
 
@@ -54,6 +56,9 @@ export const fetchConversations = (userId, token) => async dispatch => {
           } else {
             console.log(peerRes);
           }
+        } else {
+          // setup default avatar for conversations
+          conversation.avatar = defaultAvatarGroupChat;
         }
       }
 
@@ -132,23 +137,23 @@ export const fetchMembers = (conversationId, token) => async dispatch => {
 //     }
 //   };
 
-export const fetchCreateConversation =
-  (title, members, token) => async dispatch => {
-    try {
-      const res = await postDataAPI('conversation', {title, members}, token);
+export const fetchCreateConversation = (title, members, token) => async (dispatch) => {
+  try {
+    const res = await postDataAPI('conversation/', { title, members, }, token);
 
-      if (res.status === 201) {
-        console.log(res.data);
-        return res.data;
-      } else {
-        console.log(res);
-      }
-    } catch (err) {
-      console.log(err);
+    if (res.status === 201) {
+      console.log(res.data);
+      return res.data;
+    } else {
+      console.log(res);
     }
-  };
 
-const {actions, reducer} = conversationSlice;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const { actions, reducer } = conversationSlice;
 
 export const {
   getConversations,

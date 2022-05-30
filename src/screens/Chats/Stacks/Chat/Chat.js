@@ -30,7 +30,7 @@ import Story from '../../../../components/Story/Story';
 
 import {uploadFile} from '../../../../redux/uploadSlice';
 import {enumMessenger} from '../../../../utils/enum';
-import {fetchConversations} from '../../../../redux/conversationSlice';
+import { fetchConversations } from '../../../../redux/conversationSlice';
 
 const Chat = ({navigation, route}) => {
   const [messageList, setMessageList] = useState([]);
@@ -70,7 +70,7 @@ const Chat = ({navigation, route}) => {
 
     const messageData = {
       room: current_conversation._id,
-      userName: sendUser.firstName,
+      userName: sendUser?.firstName,
       idUser: auth.id,
       avatar: sendUser.avatar,
       type: enumMessenger.msgType.text,

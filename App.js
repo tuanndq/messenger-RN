@@ -20,11 +20,8 @@ import Chats from './src/screens/Chats/Chats';
 import People from './src/screens/People/People';
 import Discover from './src/screens/Discover/Discover';
 import Profile from './src/screens/Profile/Profile';
-// import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
 import Chat from './src/screens/Chats/Stacks/Chat/Chat';
 import Camera from './src/screens/Camera/Camera';
-// import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
-// import Story from './src/components/Story/Story';
 
 import {isAuthenticated} from './src/redux/authSlice';
 import {getUserInfo, getUsers} from './src/redux/userSlice';
@@ -36,6 +33,7 @@ import ChangePassword from './src/screens/Auth/ForgotPassword/ChangePassword';
 import Story from './src/components/Story/Story';
 import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
 import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
+import GroupChat from './src/screens/GroupChat/GroupChat';
 import {colors} from './src/theme/colors';
 
 const Tab = createBottomTabNavigator();
@@ -222,6 +220,13 @@ const Container = () => {
         <Stack.Screen
           name="Story"
           component={Story}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name='GroupChat'
+          component={GroupChat}
           options={{
             headerShown: false,
           }}

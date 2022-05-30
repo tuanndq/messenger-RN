@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     flex: 1,
+    borderRadius: 50,
   },
   userDetailsSectionContainer: {
     marginLeft: 15,
