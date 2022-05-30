@@ -26,6 +26,7 @@ import Modal from 'react-native-modal';
 import UserPermissions from '../../../utils/UserPermissions';
 import {getUsers, updateProfile} from '../../../redux/userSlice';
 import {uploadFile} from '../../../redux/uploadSlice';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 const EditProfile = ({navigation, route}) => {
   const {user} = route.params;
@@ -55,30 +56,17 @@ const EditProfile = ({navigation, route}) => {
   };
 
   const handlePickerAvatar = async type => {
-    UserPermissions.getCameraPermission();
+    const result = await launchImageLibrary({});
 
-    const resultPermision = await Camera.requestCameraPermissionsAsync();
-    const resultPermisionCamera = resultPermision.status;
+    const uri = result.assets[0].uri;
 
-    if (resultPermisionCamera === 'denied') {
-      toastRef.current.show('Gallery permissions are needed');
-    } else {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-      });
-
-      console.log(result);
-
-      if (!result.cancelled) {
-        if (type === 'avatar') {
-          setInfo({...info, avatar: result.uri});
-          // dispatch(editAttributeUser({ type: "avatar", data: result.uri }));
-        } else if (type === 'wallpaper') {
-          setInfo({...info, wallpaper: result.uri});
-          // dispatch(editAttributeUser({ type: "wallpaper", data: result.uri }));
-        }
+    if (!result.didCancel) {
+      if (type === 'avatar') {
+        setInfo({...info, avatar: uri});
+        // dispatch(editAttributeUser({ type: "avatar", data: uri }));
+      } else if (type === 'wallpaper') {
+        setInfo({...info, wallpaper: uri});
+        // dispatch(editAttributeUser({ type: "wallpaper", data: uri }));
       }
     }
   };
@@ -105,7 +93,6 @@ const EditProfile = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
-
         {/* a.k.a header of edit profile */}
         <View style={styles.headerEdit}>
           <Ionicons
@@ -115,7 +102,7 @@ const EditProfile = ({navigation, route}) => {
           />
 
           <Text style={styles.headerText}>Edit Profile</Text>
-          
+
           <TouchableOpacity onPress={onUpdatePress} style={styles.saveButton}>
             <Text style={styles.textSaveButton}>Save</Text>
           </TouchableOpacity>
