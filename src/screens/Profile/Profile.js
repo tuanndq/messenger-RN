@@ -38,7 +38,6 @@ const Profile = ({navigation, route}) => {
     <ScrollView style={styles.container}>
       <View style={styles.wallpaperContainer}>
         {/* a.k.a back button */}
-
         <Ionicons
           name="arrow-back"
           onPress={() => {
@@ -46,10 +45,12 @@ const Profile = ({navigation, route}) => {
           }}
           style={styles.back}
         />
+
         <Image
           source={{uri: user.wallpaper} || images.wallpaper}
           style={styles.coverPhoto}
         />
+        
         <Image source={images.take_photo} style={styles.cameraWallpaper} />
       </View>
 

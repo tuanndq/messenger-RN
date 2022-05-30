@@ -19,11 +19,11 @@ export const styles = StyleSheet.create({
   },
 
   iconLogout: {
-    width: 26,
-    height: 26,
+    width: 25,
+    height: 25,
     marginHorizontal: 5,
     marginVertical: 15,
-    marginRight: 15,
+    marginRight: 16,
   },
 
   icon: {

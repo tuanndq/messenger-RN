@@ -34,6 +34,7 @@ import {
   fetchSendMessage,
 } from '../../../../redux/messageSlice';
 import {enumMessenger} from '../../../../utils/enum';
+import { fetchConversations } from '../../../../redux/conversationSlice';
 
 const Chat = ({navigation}) => {
   const [messageList, setMessageList] = useState([]);

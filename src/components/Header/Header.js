@@ -5,7 +5,6 @@ import { images } from "../../images";
 import { editTheme } from "../../redux/themeSlice";
 import { styles } from "./Header.styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { logout } from "../../redux/authSlice";
 
 const Header = ({ heading, icon1, icon2, navigation, loggedUser }) => {
@@ -41,8 +40,8 @@ const Header = ({ heading, icon1, icon2, navigation, loggedUser }) => {
         </TouchableOpacity>
         <Text style={styles.title}>{heading}</Text>
       </View>
-      <View style={styles.row}>
 
+      <View style={styles.row}>
         {/* a.k.a Logout button */}
         <TouchableOpacity onPress={handleLogout}>
           {/* <MaterialIcons name="logout" style={{ fontSize: 26, marginRight: 12, }} /> */}
@@ -50,7 +49,13 @@ const Header = ({ heading, icon1, icon2, navigation, loggedUser }) => {
         </TouchableOpacity>
 
         <Image style={styles.iconCam} source={icon1} />
-        <Image style={styles.icon} source={icon2} />
+
+        {/* a.k.a New message button */}
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('GroupChat');
+        }}>
+          <Image style={styles.icon} source={icon2} />
+        </TouchableOpacity>
       </View>
     </View>
   );

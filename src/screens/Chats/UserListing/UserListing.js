@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
@@ -6,19 +6,11 @@ import { SwipeListView } from "react-native-swipe-list-view";
 
 import { styles } from "./UserListing.styles";
 import { images } from "../../../images";
-import { setCurrentConversation } from "../../../redux/conversationSlice";
+import { setCurrentConversation, fetchConversations } from "../../../redux/conversationSlice";
 import { fetchCurrentMessages } from "../../../redux/messageSlice";
 
 const UserListing = ({ navigation }) => {
-  // let Data = [
-  //   {
-  //     id: 1,
-  //     name: "Martin Randolph",
-  //     image: images.user_1,
-  //     lastMessage: "You: What's man! · 9:40 AM ",
-  //   },
-  // ];
-
+  const [data, setData] = useState(useSelector((state) => state.conversation.conversations));
   const dispatch = useDispatch();
 
   let Data = useSelector((state) => state.conversation.conversations);
@@ -81,6 +73,7 @@ const UserListing = ({ navigation }) => {
       dispatch(fetchCurrentMessages(item._id, auth.token))
       navigation.navigate("Chat");
     }
+    
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -122,7 +115,7 @@ const UserListing = ({ navigation }) => {
 
   return (
     <SwipeListView
-      data={Data}
+      data={data}
       renderItem={renderItem}
       renderHiddenItem={renderHiddenItem}
       leftOpenValue={180}
