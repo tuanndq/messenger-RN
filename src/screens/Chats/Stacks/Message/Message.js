@@ -18,12 +18,10 @@ export const LeftMessage = ({type, message, time, userName, avatar}) => {
       </View>
 
       {type === enumMessenger.msgType.text && (
-        <View style={styles.text}>
+        <View style={styles.textLeft}>
           <Text key={userName} style={styles.textValue}>
             {message}
           </Text>
-          {/* <Text>{userName}</Text> */}
-          {/* <Text>{time}</Text> */}
         </View>
       )}
 
@@ -45,6 +43,12 @@ export const LeftMessage = ({type, message, time, userName, avatar}) => {
           />
         </View>
       )}
+
+      {type === enumMessenger.msgType.likeIcon && (
+        <View style={styles.video}>
+          <Image source={images.like_button} style={{height: 47, width: 47}} />
+        </View>
+      )}
     </View>
   );
 };
@@ -57,7 +61,7 @@ export const RightMessage = ({type, message, time, userName, avatar}) => {
       <View style={styles.containerRightContainer}>
         <View style={styles.message}>
           {type === enumMessenger.msgType.text && (
-            <View style={styles.text}>
+            <View style={styles.textRight}>
               <Text key={userName} style={styles.textValue}>
                 {message}
               </Text>
@@ -81,6 +85,15 @@ export const RightMessage = ({type, message, time, userName, avatar}) => {
                 controlTimeout={999999}
                 disableBack
                 disableFullscreen
+              />
+            </View>
+          )}
+
+          {type === enumMessenger.msgType.likeIcon && (
+            <View style={styles.video}>
+              <Image
+                source={images.like_button}
+                style={{height: 47, width: 47}}
               />
             </View>
           )}

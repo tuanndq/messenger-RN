@@ -11,17 +11,18 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import Story from '../../components/Story/Story';
-import {fetchConversation1vs1} from '../../redux/conversationSlice';
-import {fetchCurrentMessages} from '../../redux/messageSlice';
+import {
+  setConversations,
+  setCurrentConversation,
+} from '../../redux/conversationSlice';
+import {getDataAPI, postDataAPI} from '../../utils/fetchData';
 
 const Profile = ({navigation, route}) => {
   const auth = useSelector(state => state.auth);
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const users = useSelector(state => state.user.users);
-  const current_conversation = useSelector(
-    state => state.conversation.current_conversation,
-  );
+  const {socket} = useSelector(state => state.socket);
 
   useEffect(() => {
     const otherUser = route.params?.otherUser;
@@ -33,6 +34,47 @@ const Profile = ({navigation, route}) => {
       setUser(loggedUser);
     }
   }, [route.params?.otherUser, users]);
+
+  const fetchConversation = async (peerA, peerB, token, user) => {
+    try {
+      const res = await getDataAPI(
+        `conversation/peers?peerA=${peerA}&peerB=${peerB}`,
+        token,
+      );
+
+      if (res.status === 200) {
+        const peerRes = await getDataAPI(`user/${peerB}`, token);
+
+        if (peerRes.status === 200) {
+          res.data[0].title = peerRes.data.fullName;
+          res.data[0].avatar = peerRes.data.avatar;
+        } else {
+          console.log(peerRes);
+        }
+
+        dispatch(setCurrentConversation(res.data[0]));
+        socket.emit('join_room', res.data[0]._id);
+      } else if (res.status === 204) {
+        const createNew1vs1 = await postDataAPI(
+          'conversation',
+          {title: '1vs1', members: [peerA, peerB]},
+          token,
+        );
+
+        const newConversation = {
+          ...createNew1vs1.data,
+          title: user.fullName,
+          avatar: user.avatar,
+        };
+
+        dispatch(setConversations(newConversation));
+
+        return newConversation;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -66,7 +108,6 @@ const Profile = ({navigation, route}) => {
             source={{uri: user.avatar} || images.avatar}
             style={styles.dp}
           />
-          <View style={styles.activeNowTick}></View>
           <Image source={images.take_photo} style={styles.cameraAvatar} />
         </View>
       </TouchableOpacity>
@@ -78,9 +119,17 @@ const Profile = ({navigation, route}) => {
         {/* Add Story button */}
         <View style={styles.tabContainer}>
           <View style={styles.tabImageContainer}>
-            <Image source={images.add_story} style={styles.icon_profile} />
+            {user._id === auth.id ? (
+              <Image source={images.add_story} style={styles.icon_profile} />
+            ) : (
+              <Entypo name="eye" style={{fontSize: 40, color: '#000'}} />
+            )}
           </View>
-          <Text style={styles.tabText}>Add Story</Text>
+          {user._id === auth.id ? (
+            <Text style={styles.tabText}>Add Story</Text>
+          ) : (
+            <Text style={styles.tabText}>Watch Story</Text>
+          )}
         </View>
 
         {/* Edit Profile button */}
@@ -92,17 +141,28 @@ const Profile = ({navigation, route}) => {
             }
           }}>
           <View style={styles.tabImageContainer}>
-            <Image source={images.edit_button} style={styles.icon_profile} />
+            {user._id === auth.id ? (
+              <Image source={images.edit_button} style={styles.icon_profile} />
+            ) : (
+              <Ionicons name="call" style={{fontSize: 40, color: '#000'}} />
+            )}
           </View>
-          <Text style={styles.tabText}>Edit Profile</Text>
+          {user._id === auth.id ? (
+            <Text style={styles.tabText}>Edit Profile</Text>
+          ) : (
+            <Text style={styles.tabText}>Voice call</Text>
+          )}
         </TouchableOpacity>
 
         {/* Message button */}
         <TouchableOpacity
           style={styles.tabContainer}
           onPress={() => {
-            dispatch(fetchConversation1vs1(auth.id, user._id, auth.token));
-            navigation.navigate('Chat');
+            fetchConversation(auth.id, user._id, auth.token, user).then(
+              data => {
+                navigation.navigate('Chat', {conversation: data});
+              },
+            );
           }}>
           <View style={styles.tabContainer}>
             <View style={styles.tabImageContainer}>
@@ -118,15 +178,26 @@ const Profile = ({navigation, route}) => {
         {/* More Options button */}
         <View style={styles.tabContainer}>
           <View style={styles.tabImageContainer}>
-            <Image
-              source={images.more_icon}
-              style={{
-                width: 26,
-                height: 26,
-              }}
-            />
+            {user._id === auth.id ? (
+              <Image
+                source={images.more_icon}
+                style={{
+                  width: 26,
+                  height: 26,
+                }}
+              />
+            ) : (
+              <MaterialIcons
+                name="video-call"
+                style={{fontSize: 40, color: '#000'}}
+              />
+            )}
           </View>
-          <Text style={styles.tabText}>More</Text>
+          {user._id === auth.id ? (
+            <Text style={styles.tabText}>More</Text>
+          ) : (
+            <Text style={styles.tabText}>Video call</Text>
+          )}
         </View>
       </View>
 

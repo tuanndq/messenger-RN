@@ -7,6 +7,7 @@ const alertSlice = createSlice({
   initialState: {
     forgotPassword: '',
     otp: '',
+    updateProfile: '',
   },
 
   reducers: {

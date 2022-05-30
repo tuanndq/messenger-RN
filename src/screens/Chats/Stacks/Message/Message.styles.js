@@ -37,7 +37,14 @@ export const styles = StyleSheet.create({
     display: 'flex',
   },
 
-  text: {
+  textLeft: {
+    backgroundColor: colors.gray02,
+    borderRadius: 19,
+    paddingRight: 5,
+    paddingLeft: 5,
+  },
+
+  textRight: {
     backgroundColor: colors.mainColor,
     borderRadius: 19,
     paddingRight: 5,

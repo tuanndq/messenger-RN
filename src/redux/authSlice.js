@@ -1,12 +1,15 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {postDataAPI} from '../utils/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {addUser} from './userSlice';
 
 export const register = createAsyncThunk(
   'auth/register',
-  async (info, {rejectWithValue}) => {
+  async (info, {rejectWithValue, dispatch}) => {
     try {
       const res = await postDataAPI('auth/register', info);
+
+      dispatch(addUser(res.data));
 
       await AsyncStorage.setItem('@user_token', res.data.access_token);
 
