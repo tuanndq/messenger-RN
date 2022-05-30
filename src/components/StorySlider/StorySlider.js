@@ -4,10 +4,8 @@ import {View, Image, FlatList, Text, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {images} from '../../images';
 import {styles} from './StorySlider.styles';
-// import UserPermissions from "../../utils/UserPermissions";
 import Feather from 'react-native-vector-icons/Feather';
-// import * as ImagePicker from "expo-image-picker";
-// import { Camera } from "expo-camera";
+import {launchImageLibrary} from 'react-native-image-picker';
 import {getStoriesExist} from '../../redux/storySlice';
 
 // For getting list of conversations of the user
@@ -30,22 +28,13 @@ const StorySlider = ({navigation, loggedUser}) => {
   }, [users, users.stories]);
 
   const handlePickerAvatar = async () => {
-    //   UserPermissions.getCameraPermission();
-    //   const resultPermision = await Camera.requestCameraPermissionsAsync();
-    //   const resultPermisionCamera = resultPermision.status;
-    //   if (resultPermisionCamera === "denied") {
-    //     toastRef.current.show("Gallery permissions are needed");
-    //   } else {
-    //     const result = await ImagePicker.launchImageLibraryAsync({
-    //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //       allowsEditing: true,
-    //       aspect: [4, 3],
-    //     });
-    //     console.log(result);
-    //     if (!result.cancelled) {
-    //       dispatch(createStory({ ...story, content: result.uri, type: "image" }));
-    //     }
-    //   }
+    const result = await launchImageLibrary({});
+
+    const uri = result.assets[0].uri;
+
+    if (!result.didCancel) {
+      dispatch(createStory({...story, content: uri, type: 'image'}));
+    }
   };
 
   const renderItem = ({item}) => (
