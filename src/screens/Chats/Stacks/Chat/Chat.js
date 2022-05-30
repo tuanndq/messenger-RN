@@ -135,6 +135,8 @@ const Chat = ({navigation, route}) => {
 
     const imageUrl = await uploadFile(tempImage, 'image', token);
 
+    console.log('IMAGE URL >>>', imageUrl);
+
     const messageData = {
       room: current_conversation._id,
       userName: current_conversation.title,
