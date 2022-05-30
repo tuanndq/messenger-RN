@@ -14,6 +14,7 @@ import {
   BackHandler,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Video from 'react-native-video';
 import {useDispatch} from 'react-redux';
 import {removeStoriesExist} from '../../redux/storySlice';
 const {width, height} = Dimensions.get('window');
@@ -30,6 +31,7 @@ const Story = ({navigation, route}) => {
   const [end, setEnd] = useState(0);
   // current is for get the current content is now playing
   const [current, setCurrent] = useState(0);
+  const video = useRef(null);
   // if load true then start the animation of the bars at the top
   const [load, setLoad] = useState(false);
   // progress is the animation value of the bars content playing the current state
@@ -97,7 +99,7 @@ const Story = ({navigation, route}) => {
 
   // handle playing the animation
   function play() {
-    start(end);
+    start(500);
   }
 
   // next() is for changing the content of the current content to +1
@@ -109,8 +111,8 @@ const Story = ({navigation, route}) => {
     } else {
       if (current !== content.length - 1) {
         let story = [...content];
-        console.log(story);
         story[current] = {...story[current], finish: 1};
+
         setContent(story);
         setCurrent(current + 1);
         progress.setValue(0);
@@ -190,7 +192,15 @@ const Story = ({navigation, route}) => {
           <View style={styles.backgroundContainer}>
             {/* check the content type is video or an image */}
             {content[current]?.type === 'video' ? (
-              <Text>VIDEO</Text>
+              <Video
+                onReadyForDisplay={() => {
+                  play();
+                }}
+                rate={1.0}
+                volume={1.0}
+                style={{width: width, height: height, resizeMode: 'cover'}}
+                source={{uri: content[current]?.content}} // Store reference
+              />
             ) : (
               <Image
                 onLoadEnd={() => {

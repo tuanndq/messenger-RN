@@ -7,6 +7,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import io from 'socket.io-client';
 
 import store from './src/redux/store';
@@ -32,6 +34,7 @@ import Story from './src/components/Story/Story';
 import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
 import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
 import GroupChat from './src/screens/GroupChat/GroupChat';
+import {colors} from './src/theme/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,13 +56,32 @@ const Home = () => {
           let icon = false;
 
           if (route.name === 'Chats') {
-            iconName = focused ? images.chat_active : images.chat_inactive;
+            iconName = focused ? (
+              <Ionicons name="chatbubble" style={{fontSize: 28}} />
+            ) : (
+              <Ionicons
+                name="chatbubble"
+                style={{color: colors.grayMain, fontSize: 28}}
+              />
+            );
           } else if (route.name === 'People') {
-            iconName = focused ? images.people_active : images.people_inactive;
+            iconName = focused ? (
+              <Ionicons name="people" style={{fontSize: 28}} />
+            ) : (
+              <Ionicons
+                name="people"
+                style={{color: colors.grayMain, fontSize: 28}}
+              />
+            );
           } else if (route.name === 'Discover') {
-            iconName = focused
-              ? images.discover_active
-              : images.discover_inactive;
+            iconName = focused ? (
+              <MaterialIcons name="explore" style={{fontSize: 28}} />
+            ) : (
+              <MaterialIcons
+                name="explore"
+                style={{color: colors.grayMain, fontSize: 28}}
+              />
+            );
           } else if (route.name === 'Profile') {
             icon = true;
             iconName = focused ? 'user-circle' : 'user-circle-o';
@@ -69,7 +91,7 @@ const Home = () => {
           return icon ? (
             <FontAwesome name={iconName} style={{fontSize: 24}} />
           ) : (
-            <Image source={iconName} />
+            iconName
           );
         },
         headerShown: false,

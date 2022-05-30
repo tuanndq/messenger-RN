@@ -2,21 +2,19 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
-import { SwipeListView } from "react-native-swipe-list-view";
+import {SwipeListView} from 'react-native-swipe-list-view';
 
-import { styles } from "./UserListing.styles";
-import { images } from "../../../images";
-import { setCurrentConversation, fetchConversations } from "../../../redux/conversationSlice";
-import { fetchCurrentMessages } from "../../../redux/messageSlice";
+import {styles} from './UserListing.styles';
+import {images} from '../../../images';
+import {setCurrentConversation} from '../../../redux/conversationSlice';
 
-const UserListing = ({ navigation }) => {
-  const [data, setData] = useState(useSelector((state) => state.conversation.conversations));
+const UserListing = ({navigation}) => {
   const dispatch = useDispatch();
 
-  let Data = useSelector((state) => state.conversation.conversations);
-  const auth = useSelector((state) => state.auth);
-  const users = useSelector((state) => state.user.users);
-  const { socket } = useSelector((state) => state.socket);
+  let Data = useSelector(state => state.conversation.conversations);
+  const auth = useSelector(state => state.auth);
+  const users = useSelector(state => state.user.users);
+  const {socket} = useSelector(state => state.socket);
 
   // _id:"627784ba80a7cddb35c23955"
   // title:"1vs1"
@@ -66,25 +64,17 @@ const UserListing = ({ navigation }) => {
     </View>
   );
 
-  const renderItem = ({ item }) => {
-
-    const onSelectConversation = () => {
-      dispatch(setCurrentConversation(item));
-      dispatch(fetchCurrentMessages(item._id, auth.token))
-      navigation.navigate("Chat");
-    }
-    
+  const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
           dispatch(setCurrentConversation(item));
-          socket.emit("join_room", item._id);
-          navigation.navigate("Chat");
-        }}
-      >
+          socket.emit('join_room', item._id);
+          navigation.navigate('Chat');
+        }}>
         <View style={styles.userItemContainer}>
-          <Image source={{ uri: item.avatar }} style={styles.userIcon} />
+          <Image source={{uri: item.avatar}} style={styles.userIcon} />
           <View style={styles.userDetailsSectionContainer}>
             <View>
               <Text style={styles.label1}>{item.title}</Text>
@@ -115,7 +105,7 @@ const UserListing = ({ navigation }) => {
 
   return (
     <SwipeListView
-      data={data}
+      data={Data}
       renderItem={renderItem}
       renderHiddenItem={renderHiddenItem}
       leftOpenValue={180}

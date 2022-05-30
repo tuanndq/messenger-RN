@@ -1,24 +1,25 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { postDataAPI, getDataAPI, patchDataAPI } from "../utils/fetchData";
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import {postDataAPI, getDataAPI, patchDataAPI} from '../utils/fetchData';
+import {setAlert} from './alertSlice';
 
 export const getUsers = createAsyncThunk(
-  "user/getUsers",
-  async (token, { rejectWithValue }) => {
+  'user/getUsers',
+  async (token, {rejectWithValue}) => {
     try {
       const response = await getDataAPI(`user`, token);
       return response.data;
     } catch (error) {
       console.log(error);
       return rejectWithValue({
-        error: "Could not send this request!",
+        error: 'Could not send this request!',
       });
     }
-  }
+  },
 );
 
 export const createStory = createAsyncThunk(
-  "user/createStory",
-  async ({ userId, story, token }, { rejectWithValue }) => {
+  'user/createStory',
+  async ({userId, story, token}, {rejectWithValue}) => {
     try {
       const response = await postDataAPI(`user/story`, story, token);
       return {
@@ -28,50 +29,67 @@ export const createStory = createAsyncThunk(
     } catch (error) {
       console.log(error);
       return rejectWithValue({
-        error: "Could not send this request!",
+        error: 'Could not send this request!',
       });
     }
-  }
+  },
 );
 
 export const deleteStory = createAsyncThunk(
-  "user/deleteStory",
-  async ({ userId, storyId, token }, { rejectWithValue }) => {
+  'user/deleteStory',
+  async ({userId, storyId, token}, {rejectWithValue}) => {
     try {
       const response = await deleteStory(`user/story/${storyId}`, token);
-      return { deleteStoryMsg: response.data, userId, storyId };
+      return {deleteStoryMsg: response.data, userId, storyId};
     } catch (error) {
       console.log(error);
       return rejectWithValue({
-        error: "Could not send this request!",
+        error: 'Could not send this request!',
       });
     }
-  }
+  },
+);
+
+export const updateProfile = createAsyncThunk(
+  'user/updateProfile',
+  async ({userId, profile, token}, {rejectWithValue, dispatch}) => {
+    try {
+      const response = await patchDataAPI(`user`, profile, token);
+
+      // dispatch(
+      //   setAlert({
+      //     type: 'updateProfile',
+      //     value: 'Update information successfully!',
+      //   }),
+      // );
+      return {
+        newProfile: response.data.newUser,
+        userId,
+      };
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue({
+        error: 'Could not send this request!',
+      });
+    }
+  },
 );
 
 const userSlice = createSlice({
-  name: "user",
-
+  name: 'user',
   initialState: {
     users: [],
   },
-
-  reducers: {},
-
+  reducers: {
+    addUser: (state, action) => {
+      state.users = [...state.users, action.payload];
+    },
+  },
   extraReducers: {
-    // [updateProfile.fulfilled]: (state, action) => {
-    //   state.users.map((e) => {
-    //     if (e._id === action.payload.userId) {
-    //       return action.payload.newProfile;
-    //     } else {
-    //       return e;
-    //     }
-    //   });
-    // },
     [getUsers.fulfilled]: (state, action) => {
-      const mapStories = action.payload.map((e) => ({
+      const mapStories = action.payload.map(e => ({
         ...e,
-        stories: e.stories.map((el) => ({
+        stories: e.stories.map(el => ({
           ...el,
           finish: 0,
         })),
@@ -80,7 +98,7 @@ const userSlice = createSlice({
       state.users = mapStories;
     },
     [createStory.fulfilled]: (state, action) => {
-      state.stories.map((e) => {
+      state.stories.map(e => {
         if (e._id === action.payload.userId) {
           e.stories = [...e.stories, action.payload.newStory];
           return e;
@@ -90,9 +108,18 @@ const userSlice = createSlice({
       });
     },
     [deleteStory.fulfilled]: (state, action) => {
-      state.stories.map((e) => {
+      state.stories.map(e => {
         if (e._id === action.payload.userId) {
-          e.stories.filter((story) => story._id !== action.payload.storyId);
+          e.stories.filter(story => story._id !== action.payload.storyId);
+        }
+      });
+    },
+    [updateProfile.fulfilled]: (state, action) => {
+      state.users = state.users.map(e => {
+        if (e._id === action.payload.userId) {
+          return action.payload.newProfile;
+        } else {
+          return e;
         }
       });
     },
@@ -113,24 +140,6 @@ const userSlice = createSlice({
 //     }
 //   }
 // );
-
-export const updateProfile = createAsyncThunk(
-  "user/updateProfile",
-  async ({ userId, profile, token }, { rejectWithValue }) => {
-    try {
-      const response = await patchDataAPI(`user`, profile, token);
-      return {
-        newProfile: response.data.newUser,
-        userId,
-      };
-    } catch (error) {
-      console.log(error);
-      return rejectWithValue({
-        error: "Could not send this request!",
-      });
-    }
-  }
-);
 
 // export const upload = (uri, type, token) => async (dispatch) => {
 //   try {
@@ -159,7 +168,7 @@ export const updateProfile = createAsyncThunk(
 //   }
 // };
 
-const { actions, reducer } = userSlice;
-export const {} = actions;
+const {actions, reducer} = userSlice;
+export const {addUser} = actions;
 
 export default reducer;

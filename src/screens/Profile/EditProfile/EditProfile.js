@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Toast from 'react-native-toast-message';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 // import { editAttributeUser, upload } from "../../../redux/userSlice";
@@ -33,6 +34,7 @@ const EditProfile = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const auth = useSelector(state => state.auth);
+  const alert = useSelector(state => state.alert);
   const [infoTemp, setInfoTemp] = useState(user);
   const [info, setInfo] = useState(user);
   const [modalVisible, setModalVisible] = useState({
@@ -73,6 +75,7 @@ const EditProfile = ({navigation, route}) => {
 
   const onUpdatePress = async () => {
     const newInfo = {...info};
+
     if (info.avatar !== user.avatar) {
       newInfo.avatar = await uploadFile(info.avatar, 'image', auth.token);
     }
@@ -89,6 +92,12 @@ const EditProfile = ({navigation, route}) => {
       }),
     );
   };
+
+  useEffect(() => {
+    Toast.show({
+      text1: alert.updateProfile,
+    });
+  }, [alert]);
 
   return (
     <SafeAreaView style={styles.container}>

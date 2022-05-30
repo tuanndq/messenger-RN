@@ -3,9 +3,11 @@ import React, {useEffect, useState} from 'react';
 import CustomInput from '../../../components/CustomInput/CustomInput';
 import CustomButton from '../../../components/CustomButton/CustomButton';
 import {postDataAPI} from '../../../utils/fetchData';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {setAlert} from '../../../redux/alertSlice';
 import {useSelector, useDispatch} from 'react-redux';
 import Toast from 'react-native-toast-message';
+import {colors} from 'react-native-elements';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -33,16 +35,28 @@ const ForgotPassword = ({navigation}) => {
     }
   };
   return (
-    <View style={{
-      marginHorizontal: 17,
-      marginTop: 34
-    }}>
-      <Text style={{
-        marginBottom: 12,
-        marginLeft: 2,
-        fontWeight: '600',
-        fontSize: 16,
-      }}>Enter Your Account To Receive OTP</Text>
+    <View
+      style={{
+        marginHorizontal: 17,
+        marginTop: 34,
+      }}>
+      <View style={styles.headerEdit}>
+        <Ionicons
+          name="arrow-back"
+          style={styles.headerIcon}
+          onPress={() => navigation.navigate('Home')}
+        />
+        <Text style={styles.headerText}>Back</Text>
+      </View>
+      <Text
+        style={{
+          marginBottom: 12,
+          marginLeft: 2,
+          fontWeight: '600',
+          fontSize: 16,
+        }}>
+        Enter Your Account To Receive OTP
+      </Text>
 
       <CustomInput
         placeholder={'Please enter your email'}
@@ -56,5 +70,24 @@ const ForgotPassword = ({navigation}) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  headerEdit: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 20,
+  },
+  headerIcon: {
+    fontSize: 20,
+    color: colors.blackApp,
+  },
+
+  headerText: {
+    fontSize: 18,
+    marginLeft: 10,
+    color: colors.blackApp,
+  },
+});
 
 export default ForgotPassword;

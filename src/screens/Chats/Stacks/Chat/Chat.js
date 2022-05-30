@@ -29,14 +29,10 @@ import {LeftMessage, RightMessage} from '../Message/Message';
 import Story from '../../../../components/Story/Story';
 
 import {uploadFile} from '../../../../redux/uploadSlice';
-import {
-  fetchCurrentMessages,
-  fetchSendMessage,
-} from '../../../../redux/messageSlice';
 import {enumMessenger} from '../../../../utils/enum';
 import { fetchConversations } from '../../../../redux/conversationSlice';
 
-const Chat = ({navigation}) => {
+const Chat = ({navigation, route}) => {
   const [messageList, setMessageList] = useState([]);
   const [text, setText] = useState('');
   const [image, setImage] = useState(null);
@@ -44,12 +40,13 @@ const Chat = ({navigation}) => {
   const [showEmoji, setShowEmoji] = useState(false);
   const video = useRef(null);
   const scrollViewRef = useRef();
+  const propsConversation = route.params?.conversation;
 
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
-  const current_conversation = useSelector(
-    state => state.conversation.current_conversation,
-  );
+  const current_conversation =
+    propsConversation ||
+    useSelector(state => state.conversation.current_conversation);
   // const currentMessages = useSelector(
   //   (state) => state.message.currentMessages.messages
   // );
@@ -66,42 +63,36 @@ const Chat = ({navigation}) => {
     return user;
   }, [users, auth]);
 
-  const sendMessage = () => {
-    if (text !== '') {
-      const messageData = {
-        room: current_conversation._id,
-        userName: sendUser.firstName,
-        idUser: auth.id,
-        avatar: sendUser.avatar,
-        type: enumMessenger.msgType.text,
-        message: text,
-        time:
-          new Date(Date.now()).getHours() +
-          ':' +
-          new Date(Date.now()).getMinutes(),
-      };
-
-      socket.emit('send_message', messageData);
-      setMessageList([...messageList, messageData]);
-      setText('');
+  const sendMessage = (sendLikeIcon = false) => {
+    if (showEmoji) {
+      setShowEmoji(false);
     }
 
-    // if (text !== "") {
-    //   console.log(text);
-    //   dispatch(fetchSendMessage(current_conversation._id, auth.id, 0, text, auth.token));
-    //   dispatch(fetchCurrentMessages(current_conversation._id, auth.token));
+    const messageData = {
+      room: current_conversation._id,
+      userName: sendUser?.firstName,
+      idUser: auth.id,
+      avatar: sendUser.avatar,
+      type: enumMessenger.msgType.text,
+      message: 'like_icon',
+      time:
+        new Date(Date.now()).getHours() +
+        ':' +
+        new Date(Date.now()).getMinutes(),
+    };
 
-    //   socket.emit("send_message", currentMessages[0]);
-    //   setMessageList([...messageList, currentMessages[0]]);
-    //   setText("");
-    // }
+    if (text !== '') {
+      messageData.message = text;
+    }
+
+    if (sendLikeIcon) {
+      messageData.type = enumMessenger.msgType.likeIcon;
+    }
+
+    socket.emit('send_message', messageData);
+    setMessageList([...messageList, messageData]);
+    setText('');
   };
-
-  // useEffect(() => {
-  //   socket.on("receive_message", (data) => {
-  //     setMessageList([...messageList, data]);
-  //   });
-  // }, [socket, messageList]);
 
   useEffect(() => {
     const handler = data => {
@@ -117,6 +108,10 @@ const Chat = ({navigation}) => {
       socket.off('receive_message', handler);
     };
   }, [socket, messageList]);
+
+  useEffect(() => {
+    dispatch(fetchConversations(auth.id, auth.token));
+  }, [auth]);
 
   const handleText = emoji => {
     const appendEmoji = text + emoji;
@@ -204,8 +199,10 @@ const Chat = ({navigation}) => {
                 avatar: current_conversation.avatar,
                 userInfo: {
                   username: current_conversation.title,
+                  idReceive: current_conversation.members[1],
                   status: 'Active',
                 },
+                users: users,
               });
             }}>
             <Image
@@ -333,14 +330,20 @@ const Chat = ({navigation}) => {
 
         {/* a.k.a Like button */}
         {text === '' && (
-          <TouchableOpacity style={styles.iconFooter}>
+          <TouchableOpacity
+            onPress={() => {
+              sendMessage(true);
+            }}
+            style={styles.iconFooter}>
             <Image source={images.like_button} style={styles.like_button} />
           </TouchableOpacity>
         )}
 
         {/* a.k.a Send button */}
         {text !== '' && (
-          <TouchableOpacity onPress={sendMessage} style={styles.iconFooter}>
+          <TouchableOpacity
+            onPress={() => sendMessage(false)}
+            style={styles.iconFooter}>
             <Image source={images.send_button} style={styles.send_button} />
           </TouchableOpacity>
         )}

@@ -32,6 +32,7 @@ const GroupChat = ({ navigation }) => {
     const removePreMember = (member) => {
         const preMembersTemp = preMembers.filter(item => item._id !== member._id);
         setPreMembers(preMembersTemp);
+        console.log(preMembers);
     };
 
     const createGroupChat = async () => {
@@ -105,7 +106,7 @@ const GroupChat = ({ navigation }) => {
         return (
             <TouchableOpacity
                 style={styles.userSlot}
-                onPress={removePreMember}
+                onPress={() => removePreMember(user)}
             >
                 <Image
                     source={{ uri: user.avatar }}
@@ -173,13 +174,17 @@ const GroupChat = ({ navigation }) => {
             <View style={styles.preMemberView}>
                 {preMembers.length > 0 && (
                     <View style={styles.preMemberContainer}>
-                        <FlatList
+                        {/* <FlatList
                             style={{}}
                             horizontal={true}
                             data={preMembers}
                             renderItem={renderItemUserSlot}
                             keyExtractor={item => item._id}
-                        />
+                        /> */}
+
+                        {preMembers.map((item) => {
+                            return <UserSlot user={item} key={item} />
+                        })}
                     </View>
                 )}
 

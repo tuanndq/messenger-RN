@@ -1,15 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { postDataAPI, getDataAPI } from "../utils/fetchData";
+import {createSlice} from '@reduxjs/toolkit';
+import {postDataAPI, getDataAPI} from '../utils/fetchData';
 
 const messageSlice = createSlice({
-  name: "upload",
+  name: 'message',
   initialState: {
-    currentMessages: [],
+    lastMessages: [],
   },
   reducers: {
-    getCurrentMessages(state) {
-      return state.currentMessages;
-    },
     setCurrentMessages(state, action) {
       state.currentMessages = action.payload;
     },
@@ -17,50 +14,52 @@ const messageSlice = createSlice({
 });
 
 // Temporarily get all message in conversation
-export const fetchCurrentMessages = (conversationId, token) => async (dispatch) => {
-  try {
-    const res = await getDataAPI(
-      `message/whole/conversation/${conversationId}`,
-      token
-    );
+// export const fetchCurrentMessages =
+//   (conversationId, token) => async dispatch => {
+//     try {
+//       console.log('ID FROM REDUX', conversationId);
+//       const res = await getDataAPI(
+//         `message/whole/conversation/${conversationId}`,
+//         token,
+//       );
 
-    if (res.status === 200) {
-      dispatch(setCurrentMessages(res.data));
-    } else {
-      console.log(res);
+//       if (res.status === 200) {
+//         dispatch(setCurrentMessages(res.data));
+//       } else {
+//         console.log(res);
+//       }
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   };
+
+export const fetchSendMessage =
+  (conversationId, senderId, msgType, content, token) => async dispatch => {
+    try {
+      const res = await postDataAPI(
+        `message/`,
+        {
+          conversationId,
+          senderId,
+          msgType,
+          content,
+        },
+        token,
+      );
+
+      if (res.status === 201) {
+        console.log(res.data);
+        return res.data;
+      } else {
+        console.log(res);
+      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
-};
+  };
 
-export const fetchSendMessage = (conversationId, senderId, msgType, content, token) => async (dispatch) => {
-  try {
-    const res = await postDataAPI(
-      `message/`,
-      {
-        conversationId,
-        senderId,
-        msgType,
-        content,
-      },
-      token
-    );
+const {actions, reducer} = messageSlice;
 
-    if (res.status === 201) {
-      console.log(res.data);
-      return res.data;
-    } else {
-      console.log(res);
-    }
-
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const { actions, reducer } = messageSlice;
-
-export const { getCurrentMessages, setCurrentMessages } = actions;
+export const {getCurrentMessages, setCurrentMessages} = actions;
 
 export default reducer;
