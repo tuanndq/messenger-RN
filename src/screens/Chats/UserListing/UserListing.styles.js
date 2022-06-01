@@ -1,14 +1,14 @@
-import { StyleSheet } from "react-native";
-import { colors } from "../../../theme/colors";
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {},
   userItemContainer: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.white,
   },
   userIcon: {
@@ -19,51 +19,51 @@ export const styles = StyleSheet.create({
   },
   userDetailsSectionContainer: {
     marginLeft: 15,
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 5,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   label1: {
     color: colors.zblack,
     fontSize: 17,
-    fontWeight: "500",
+    fontWeight: '500',
     lineHeight: 22,
   },
   label2: {
     color: colors.zblack,
     opacity: 0.5,
-    fontWeight: "400",
+    fontWeight: '400',
   },
   rowBack: {
-    alignItems: "center",
+    alignItems: 'center',
     backgroundColor: colors.white,
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingLeft: 15,
   },
   checked: {
-    position: "relative",
+    position: 'relative',
     top: 10,
   },
   backRightBtn: {
-    alignItems: "center",
+    alignItems: 'center',
     bottom: 0,
-    justifyContent: "center",
-    position: "absolute",
+    justifyContent: 'center',
+    position: 'absolute',
     top: 0,
     width: 75,
   },
   backRightBtnLeft: {
-    backgroundColor: "blue",
+    backgroundColor: 'blue',
     right: 75,
   },
   backRightBtnRight: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
     right: 0,
   },
   itemRowWrapper: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   itemRowIcon: {
     marginHorizontal: 5,

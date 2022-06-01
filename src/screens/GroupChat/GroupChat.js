@@ -37,12 +37,7 @@ const GroupChat = ({ navigation }) => {
 
     const createGroupChat = async () => {
         if (preMembers.length >= 2 && title) {
-            console.log(preMembersId);
-            console.log(title);
-            console.log(auth.token);
-
             const preMembersId = preMembers.map(item => item._id);
-
             dispatch(fetchCreateConversation(title, preMembersId, auth.token));
         }
     }
@@ -115,16 +110,26 @@ const GroupChat = ({ navigation }) => {
 
                 <Ionicons
                     name="close"
-                    style={{}}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        color: colors.zblack,
+                        backgroundColor: colors.white,
+                        borderRadius: 50,
+                        borderColor: colors.zblack,
+                        fontSize: 16,
+                    }}
                 />
 
-                <Text style={{}}>{user.firstName}</Text>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.zblack,
+                    paddingTop: 7,
+                    fontSize: 14,
+                }}>{user.firstName}</Text>
             </TouchableOpacity>
         );
-    };
-
-    const renderItemUserSlot = ({ user }) => {
-        <UserSlot user={user} />
     };
 
     return (
@@ -174,28 +179,11 @@ const GroupChat = ({ navigation }) => {
             <View style={styles.preMemberView}>
                 {preMembers.length > 0 && (
                     <View style={styles.preMemberContainer}>
-                        {/* <FlatList
-                            style={{}}
-                            horizontal={true}
-                            data={preMembers}
-                            renderItem={renderItemUserSlot}
-                            keyExtractor={item => item._id}
-                        /> */}
-
                         {preMembers.map((item) => {
                             return <UserSlot user={item} key={item} />
                         })}
                     </View>
                 )}
-
-                {/* <View style={styles.preMemberContainer}>
-                    <FlatList
-                        style={{}}
-                        data={users}
-                        renderItem={renderItemUserSlot}
-                        keyExtractor={item => item._id}
-                    />
-                </View> */}
             </View>
 
             {/* a.k.a Title of conversation */}

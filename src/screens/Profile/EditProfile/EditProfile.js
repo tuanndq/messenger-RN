@@ -60,6 +60,8 @@ const EditProfile = ({navigation, route}) => {
   const handlePickerAvatar = async type => {
     const result = await launchImageLibrary({});
 
+    console.log('AVATAR >>>>>', result);
+
     const uri = result.assets[0].uri;
 
     if (!result.didCancel) {
