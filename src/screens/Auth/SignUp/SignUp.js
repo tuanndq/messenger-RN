@@ -58,7 +58,7 @@ const SignUp = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <Image source={images.Logo} style={styles.logo} resizeMode="contain" />
 
-      <Text style={styles.text}>Welcome to SnapChat</Text>
+      <Text style={styles.text}>Welcome to FlashMessage</Text>
 
       <CustomButton
         onPress={onLogIn}

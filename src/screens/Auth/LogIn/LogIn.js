@@ -43,7 +43,7 @@ const LogIn = ({ navigation }) => {
       <View style={styles.container}>
         <Image source={images.Logo} style={styles.logo} resizeMode="contain" />
 
-        <Text style={styles.text}>Welcome to SnapChat</Text>
+        <Text style={styles.text}>Welcome to FlashMessage</Text>
 
         <CustomInput placeholder="Username" value={email} setValue={setEmail} />
 

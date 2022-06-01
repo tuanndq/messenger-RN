@@ -7,8 +7,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from "react-native-swipe-list-view";
 import { images } from "../../images";
 import { colors } from '../../theme/colors';
-import { fetchCreateConversation } from "../../redux/conversationSlice";
+import { defaultAvatarGroupChat, fetchCreateConversation, setConversations } from "../../redux/conversationSlice";
 import SearchBoxGroupChat from "./SearchBoxGroupChat/SearchBoxGroupChat";
+import { postDataAPI } from "../../utils/fetchData";
 
 const GroupChat = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -35,10 +36,32 @@ const GroupChat = ({ navigation }) => {
         console.log(preMembers);
     };
 
-    const createGroupChat = async () => {
+    const fetchCreateGroupChat = async () => {
         if (preMembers.length >= 2 && title) {
             const preMembersId = preMembers.map(item => item._id);
-            dispatch(fetchCreateConversation(title, preMembersId, auth.token));
+            preMembersId.push(auth.id);
+
+            try {
+                const res = await postDataAPI(
+                    'conversation/',
+                    {
+                        title,
+                        members: preMembersId,
+                    },
+                    auth.token
+                );
+
+                if (res.status === 201) {
+                    console.log(res);
+                    res.data.avatar = defaultAvatarGroupChat;
+                    dispatch(setConversations(res.data));
+                    return res.data;
+                } else {
+                    console.log(res);
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
@@ -162,7 +185,13 @@ const GroupChat = ({ navigation }) => {
                         </TouchableOpacity>} */}
 
                     <TouchableOpacity
-                        onPress={createGroupChat}
+                        onPress={() => {
+                            fetchCreateGroupChat().then(
+                                data => {
+                                    navigation.navigate('Chat', { conversation: data });
+                                }
+                            )
+                        }}
                         style={styles.nextBtn}
                     >
                         <Text style={styles.nextBtnText}>Create</Text>
