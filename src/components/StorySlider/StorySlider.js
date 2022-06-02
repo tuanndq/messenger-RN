@@ -7,21 +7,24 @@ import {styles} from './StorySlider.styles';
 import Feather from 'react-native-vector-icons/Feather';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {getStoriesExist} from '../../redux/storySlice';
+import {createStory} from '../../redux/userSlice';
 
 // For getting list of conversations of the user
 import {fetchConversations} from '../../redux/conversationSlice';
 
 const StorySlider = ({navigation, loggedUser}) => {
   const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
   const [story, setStory] = useState({content: '', type: '', finish: 0});
   const storiesExist = useSelector(state => state.story.storiesExist);
 
   // For getting list of conversations of the user
-  const auth = useSelector(state => state.auth);
 
   useEffect(() => {
-    const filterStories = users.filter(user => user.stories.length > 0);
+    const filterStories = users.filter(user => {
+      return user.stories.length > 0 && user._id != auth.id;
+    });
     dispatch(getStoriesExist(filterStories));
     // Login successfully => Load conversations of the user
     dispatch(fetchConversations(auth.id, auth.token));
@@ -33,7 +36,7 @@ const StorySlider = ({navigation, loggedUser}) => {
     const uri = result.assets[0].uri;
 
     if (!result.didCancel) {
-      dispatch(createStory({...story, content: uri, type: 'image'}));
+      dispatch(createStory({...story, content: uri, type: 'image', dispatch}));
     }
   };
 
@@ -45,6 +48,7 @@ const StorySlider = ({navigation, loggedUser}) => {
         navigation.navigate('Story', {
           user: item,
           storiesExist: storiesExist,
+          isMyStory: false,
         })
       }>
       <Image source={{uri: item.avatar}} />
@@ -60,6 +64,7 @@ const StorySlider = ({navigation, loggedUser}) => {
             ? navigation.navigate('Story', {
                 user: loggedUser,
                 storiesExist: storiesExist,
+                isMyStory: true,
               })
             : handlePickerAvatar()
         }>

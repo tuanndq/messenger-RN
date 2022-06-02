@@ -1,6 +1,8 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {postDataAPI, getDataAPI, patchDataAPI} from '../utils/fetchData';
 import {setAlert} from './alertSlice';
+import {addStory} from './storySlice';
+import {uploadFile} from './uploadSlice';
 
 export const getUsers = createAsyncThunk(
   'user/getUsers',
@@ -19,13 +21,23 @@ export const getUsers = createAsyncThunk(
 
 export const createStory = createAsyncThunk(
   'user/createStory',
-  async ({userId, story, token}, {rejectWithValue}) => {
+  async ({userId, content, type, token, dispatch}, {rejectWithValue}) => {
     try {
-      const response = await postDataAPI(`user/story`, story, token);
-      return {
+      const url = await uploadFile(content, type, token);
+
+      const response = await postDataAPI(
+        `user/story`,
+        {content: url, type: type},
+        token,
+      );
+      console.log({
         newStory: response.data.story,
         userId,
-      };
+      });
+
+      dispatch(addStory({userId, story: response.data.story}));
+
+      alert('Upload story successfylly!');
     } catch (error) {
       console.log(error);
       return rejectWithValue({

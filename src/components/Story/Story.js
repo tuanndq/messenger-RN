@@ -13,16 +13,23 @@ import {
   TouchableOpacity,
   BackHandler,
 } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {launchImageLibrary} from 'react-native-image-picker';
+
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Video from 'react-native-video';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {removeStoriesExist} from '../../redux/storySlice';
+import {createStory} from '../../redux/userSlice';
+
 const {width, height} = Dimensions.get('window');
 const screenRatio = height / width;
 
 const Story = ({navigation, route}) => {
   // THE CONTENT
-  const {user, storiesExist} = route.params;
+  const {user, storiesExist, isMyStory} = route.params;
   const [content, setContent] = useState(user.stories);
   const dispatch = useDispatch();
   // i use modal for opening the instagram stories
@@ -36,6 +43,9 @@ const Story = ({navigation, route}) => {
   const [load, setLoad] = useState(false);
   // progress is the animation value of the bars content playing the current state
   const progress = useRef(new Animated.Value(0)).current;
+  // Sau khi xem hết story của chính mình, sẽ hiện modal tạo thêm story
+  const [showCreateStory, setShowCreateStory] = useState(false);
+  const auth = useSelector(state => state.auth);
 
   useEffect(() => {
     if (user) setContent(user.stories);
@@ -105,8 +115,9 @@ const Story = ({navigation, route}) => {
   // next() is for changing the content of the current content to +1
   function next() {
     // check if the next content is not empty
-
-    if (current === content.length - 1 && !storiesExist) {
+    if (current === content.length - 1 && isMyStory && !showCreateStory) {
+      setShowCreateStory(true);
+    } else if (current === content.length - 1 && !storiesExist) {
       close();
     } else {
       if (current !== content.length - 1) {
@@ -183,127 +194,174 @@ const Story = ({navigation, route}) => {
     navigation.goBack();
   }
 
+  async function handleAddStory() {
+    const result = await launchImageLibrary({});
+
+    const uri = result.assets[0].uri;
+
+    if (!result.didCancel) {
+      dispatch(
+        createStory({
+          userId: auth.id,
+          content: uri,
+          type: 'image',
+          token: auth.token,
+          dispatch,
+        }),
+      );
+    }
+
+    close();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
       {/* MODAL */}
-      <Modal animationType="fade" transparent={false} visible={modalVisible}>
-        <View style={styles.containerModal}>
-          <View style={styles.backgroundContainer}>
-            {/* check the content type is video or an image */}
-            {content[current]?.type === 'video' ? (
-              <Video
-                onReadyForDisplay={() => {
-                  play();
-                }}
-                rate={1.0}
-                volume={1.0}
-                style={{width: width, height: height, resizeMode: 'cover'}}
-                source={{uri: content[current]?.content}} // Store reference
-              />
-            ) : (
-              <Image
-                onLoadEnd={() => {
-                  progress.setValue(0);
-                  play();
-                }}
-                source={{
-                  uri: content[current]?.content,
-                }}
-                style={{width: width, height: height, resizeMode: 'cover'}}
-              />
-            )}
-          </View>
-          <View
-            style={{
-              flexDirection: 'column',
-              flex: 1,
-            }}>
-            {/* ANIMATION BARS */}
-            <View
-              style={{
-                flexDirection: 'row',
-                paddingTop: 10,
-                paddingHorizontal: 10,
-              }}>
-              {content &&
-                content.map((index, key) => {
-                  return (
-                    // THE BACKGROUND
-                    <View
-                      key={key}
-                      style={{
-                        height: 2,
-                        flex: 1,
-                        flexDirection: 'row',
-                        backgroundColor: 'rgba(117, 117, 117, 0.5)',
-                        marginHorizontal: 2,
-                      }}>
-                      {/* THE ANIMATION OF THE BAR*/}
-                      <Animated.View
-                        style={{
-                          flex:
-                            current === key ? progress : content[key].finish,
-                          height: 2,
-                          backgroundColor: 'rgba(255, 255, 255, 1)',
-                        }}></Animated.View>
-                    </View>
-                  );
-                })}
-            </View>
-            {/* END OF ANIMATION BARS */}
-
-            <View
-              style={{
-                height: 50,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingHorizontal: 15,
-              }}>
-              {/* THE AVATAR AND USERNAME  */}
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  style={{height: 30, width: 30, borderRadius: 25}}
-                  source={user?.avatar}
+      {!showCreateStory && (
+        <Modal animationType="fade" transparent={false} visible={modalVisible}>
+          <View style={styles.containerModal}>
+            <View style={styles.backgroundContainer}>
+              {/* check the content type is video or an image */}
+              {content[current]?.type === 'video' ? (
+                <Video
+                  onReadyForDisplay={() => {
+                    play();
+                  }}
+                  rate={1.0}
+                  volume={1.0}
+                  style={{width: width, height: height, resizeMode: 'cover'}}
+                  source={{uri: content[current]?.content}} // Store reference
                 />
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    color: 'white',
-                    paddingLeft: 10,
-                  }}>
-                  {user?.fullName}
-                </Text>
-              </View>
-              {/* END OF THE AVATAR AND USERNAME */}
-              {/* THE CLOSE BUTTON */}
-              <TouchableOpacity
-                onPress={() => {
-                  close();
+              ) : (
+                <Image
+                  onLoadEnd={() => {
+                    progress.setValue(0);
+                    play();
+                  }}
+                  source={{
+                    uri: content[current]?.content,
+                  }}
+                  style={{width: width, height: height, resizeMode: 'cover'}}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                flex: 1,
+              }}>
+              {/* ANIMATION BARS */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  paddingTop: 10,
+                  paddingHorizontal: 10,
                 }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 50,
-                    paddingHorizontal: 15,
-                  }}></View>
-              </TouchableOpacity>
-              {/* END OF CLOSE BUTTON */}
+                {content &&
+                  content.map((index, key) => {
+                    return (
+                      // THE BACKGROUND
+                      <View
+                        key={key}
+                        style={{
+                          height: 2,
+                          flex: 1,
+                          flexDirection: 'row',
+                          backgroundColor: 'rgba(117, 117, 117, 0.5)',
+                          marginHorizontal: 2,
+                        }}>
+                        {/* THE ANIMATION OF THE BAR*/}
+                        <Animated.View
+                          style={{
+                            flex:
+                              current === key ? progress : content[key].finish,
+                            height: 2,
+                            backgroundColor: 'rgba(255, 255, 255, 1)',
+                          }}></Animated.View>
+                      </View>
+                    );
+                  })}
+              </View>
+              {/* END OF ANIMATION BARS */}
+
+              <View
+                style={{
+                  height: 50,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingHorizontal: 15,
+                }}>
+                {/* THE AVATAR AND USERNAME  */}
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image
+                    style={{height: 30, width: 30, borderRadius: 25}}
+                    source={user?.avatar}
+                  />
+                  <Text
+                    style={{
+                      fontWeight: 'bold',
+                      color: 'white',
+                      paddingLeft: 10,
+                    }}>
+                    {user?.fullName}
+                  </Text>
+                </View>
+                {/* END OF THE AVATAR AND USERNAME */}
+                {/* THE CLOSE BUTTON */}
+                <TouchableOpacity
+                  onPress={() => {
+                    close();
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 50,
+                      paddingHorizontal: 15,
+                    }}>
+                    <FontAwesome
+                      name="close"
+                      style={{fontSize: 20, color: 'white'}}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* END OF CLOSE BUTTON */}
+              </View>
+              {/* HERE IS THE HANDLE FOR PREVIOUS AND NEXT PRESS */}
+              <View style={{flex: 1, flexDirection: 'row'}}>
+                <TouchableWithoutFeedback onPress={() => previous()}>
+                  <View style={{flex: 1}}></View>
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => next()}>
+                  <View style={{flex: 1}}></View>
+                </TouchableWithoutFeedback>
+              </View>
+              {/* END OF THE HANDLE FOR PREVIOUS AND NEXT PRESS */}
             </View>
-            {/* HERE IS THE HANDLE FOR PREVIOUS AND NEXT PRESS */}
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <TouchableWithoutFeedback onPress={() => previous()}>
-                <View style={{flex: 1}}></View>
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => next()}>
-                <View style={{flex: 1}}></View>
-              </TouchableWithoutFeedback>
-            </View>
-            {/* END OF THE HANDLE FOR PREVIOUS AND NEXT PRESS */}
           </View>
-        </View>
-      </Modal>
+        </Modal>
+      )}
+
+      {showCreateStory && (
+        <Modal>
+          <View style={styles.backgroundContainer}>
+            <TouchableOpacity onPress={handleAddStory}>
+              <Text>Create new story</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={close}>
+              <Text>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                next();
+                setShowCreateStory(false);
+              }}>
+              <Text>See more stories</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      )}
     </SafeAreaView>
   );
 };
