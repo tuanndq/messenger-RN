@@ -7,8 +7,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SwipeListView } from "react-native-swipe-list-view";
 import { images } from "../../images";
 import { colors } from '../../theme/colors';
-import { fetchCreateConversation } from "../../redux/conversationSlice";
+import { defaultAvatarGroupChat, fetchCreateConversation, setConversations } from "../../redux/conversationSlice";
 import SearchBoxGroupChat from "./SearchBoxGroupChat/SearchBoxGroupChat";
+import { postDataAPI } from "../../utils/fetchData";
 
 const GroupChat = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -35,15 +36,32 @@ const GroupChat = ({ navigation }) => {
         console.log(preMembers);
     };
 
-    const createGroupChat = async () => {
+    const fetchCreateGroupChat = async () => {
         if (preMembers.length >= 2 && title) {
-            console.log(preMembersId);
-            console.log(title);
-            console.log(auth.token);
-
             const preMembersId = preMembers.map(item => item._id);
+            preMembersId.push(auth.id);
 
-            dispatch(fetchCreateConversation(title, preMembersId, auth.token));
+            try {
+                const res = await postDataAPI(
+                    'conversation/',
+                    {
+                        title,
+                        members: preMembersId,
+                    },
+                    auth.token
+                );
+
+                if (res.status === 201) {
+                    console.log(res);
+                    res.data.avatar = defaultAvatarGroupChat;
+                    dispatch(setConversations(res.data));
+                    return res.data;
+                } else {
+                    console.log(res);
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
@@ -115,16 +133,26 @@ const GroupChat = ({ navigation }) => {
 
                 <Ionicons
                     name="close"
-                    style={{}}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        color: colors.zblack,
+                        backgroundColor: colors.white,
+                        borderRadius: 50,
+                        borderColor: colors.zblack,
+                        fontSize: 16,
+                    }}
                 />
 
-                <Text style={{}}>{user.firstName}</Text>
+                <Text style={{
+                    textAlign: 'center',
+                    color: colors.zblack,
+                    paddingTop: 7,
+                    fontSize: 14,
+                }}>{user.firstName}</Text>
             </TouchableOpacity>
         );
-    };
-
-    const renderItemUserSlot = ({ user }) => {
-        <UserSlot user={user} />
     };
 
     return (
@@ -157,7 +185,13 @@ const GroupChat = ({ navigation }) => {
                         </TouchableOpacity>} */}
 
                     <TouchableOpacity
-                        onPress={createGroupChat}
+                        onPress={() => {
+                            fetchCreateGroupChat().then(
+                                data => {
+                                    navigation.navigate('Chat', { conversation: data });
+                                }
+                            )
+                        }}
                         style={styles.nextBtn}
                     >
                         <Text style={styles.nextBtnText}>Create</Text>
@@ -174,28 +208,11 @@ const GroupChat = ({ navigation }) => {
             <View style={styles.preMemberView}>
                 {preMembers.length > 0 && (
                     <View style={styles.preMemberContainer}>
-                        {/* <FlatList
-                            style={{}}
-                            horizontal={true}
-                            data={preMembers}
-                            renderItem={renderItemUserSlot}
-                            keyExtractor={item => item._id}
-                        /> */}
-
                         {preMembers.map((item) => {
                             return <UserSlot user={item} key={item} />
                         })}
                     </View>
                 )}
-
-                {/* <View style={styles.preMemberContainer}>
-                    <FlatList
-                        style={{}}
-                        data={users}
-                        renderItem={renderItemUserSlot}
-                        keyExtractor={item => item._id}
-                    />
-                </View> */}
             </View>
 
             {/* a.k.a Title of conversation */}

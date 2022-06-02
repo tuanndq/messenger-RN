@@ -51,10 +51,11 @@ const StorySlider = ({navigation, loggedUser}) => {
           isMyStory: false,
         })
       }>
-      <Image source={{uri: item.avatar}} />
+      <Image source={{uri: item.avatar}} style={styles.storyAvatar} />
       <Text style={styles.userName}>{item.fullName}</Text>
     </TouchableOpacity>
   );
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -69,14 +70,19 @@ const StorySlider = ({navigation, loggedUser}) => {
             : handlePickerAvatar()
         }>
         {loggedUser?.stories?.length > 0 ? (
-          <Image source={{uri: loggedUser?.avatar}} />
+          <Image
+            source={{uri: loggedUser?.avatar}}
+            style={styles.storyAvatar}
+          />
         ) : (
           <Feather name="plus" />
         )}
 
         <Text style={styles.userName}>Your Story</Text>
       </TouchableOpacity>
+
       <FlatList
+        style={{}}
         showsHorizontalScrollIndicator={false}
         horizontal={true}
         data={storiesExist}

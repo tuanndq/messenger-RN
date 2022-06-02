@@ -35,7 +35,7 @@ const Profile = ({navigation, route}) => {
     }
   }, [route.params?.otherUser, users]);
 
-  const fetchConversation = async (peerA, peerB, token, user) => {
+  const fetchCreateConversation = async (peerA, peerB, token, user) => {
     try {
       const res = await getDataAPI(
         `conversation/peers?peerA=${peerA}&peerB=${peerB}`,
@@ -159,7 +159,7 @@ const Profile = ({navigation, route}) => {
         <TouchableOpacity
           style={styles.tabContainer}
           onPress={() => {
-            fetchConversation(auth.id, user._id, auth.token, user).then(
+            fetchCreateConversation(auth.id, user._id, auth.token, user).then(
               data => {
                 navigation.navigate('Chat', {conversation: data});
               },

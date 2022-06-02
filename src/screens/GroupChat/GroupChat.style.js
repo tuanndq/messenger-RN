@@ -75,6 +75,30 @@ export const styles = StyleSheet.create({
         // overflow: 'scroll',
     },
 
+    preMemberView: {
+        backgroundColor: colors.white,
+        paddingHorizontal: 15,
+        paddingTop: 10,
+        paddingBottom: 11,
+    },
+
+    preMemberContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+
+    userSlot: {
+        backgroundColor: colors.white,
+        position: 'relative',
+        marginRight: 30,
+    },
+
+    userSlotAvatar: {
+        height: 60,
+        width: 60,
+        borderRadius: 50,
+    },
+
     userItemContainer: {
         display: "flex",
         flexDirection: "row",
@@ -87,6 +111,7 @@ export const styles = StyleSheet.create({
         width: 60,
         height: 60,
         flex: 1,
+        borderRadius: 50,
     },
     userDetailsSectionContainer: {
         marginLeft: 15,
