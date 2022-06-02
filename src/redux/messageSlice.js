@@ -3,9 +3,7 @@ import {postDataAPI, getDataAPI} from '../utils/fetchData';
 
 const messageSlice = createSlice({
   name: 'message',
-  initialState: {
-    lastMessages: [],
-  },
+  initialState: {},
   reducers: {
     setCurrentMessages(state, action) {
       state.currentMessages = action.payload;

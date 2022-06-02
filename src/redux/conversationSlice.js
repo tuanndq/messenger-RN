@@ -8,11 +8,15 @@ const conversationSlice = createSlice({
     conversations: [],
     current_conversation: {},
     members: [],
+    lastMessages: [],
   },
 
   reducers: {
     getConversations(state, action) {
       state.conversations = action.payload;
+    },
+    setLastMessages(state, action) {
+      state.lastMessages = action.payload;
     },
     setConversations(state, action) {
       state.conversations = [...state.conversations, action.payload];
@@ -39,7 +43,7 @@ export const fetchConversations = (userId, token) => async dispatch => {
     const res = await getDataAPI(`conversation/user/${userId}`, token);
 
     if (res.status === 200) {
-      // Change title of Conversations whose title = '1vs1' into peerName
+      // Change title of Conversations whose title = '1vs1' into peerName\
       for (const conversation of res.data.conversations) {
         if (conversation.title === '1vs1') {
           let peerId =
@@ -56,6 +60,25 @@ export const fetchConversations = (userId, token) => async dispatch => {
           }
         }
       }
+
+      const res1 = await getDataAPI(`message/last`, token);
+
+      const {lastMessages} = res1.data;
+
+      const mapMess = res.data.conversations.map(e => e._id);
+
+      const lastMess = lastMessages
+        .filter(mess => mapMess.includes(mess._id))
+        .map(e => ({
+          ...e,
+          createAt:
+            new Date(e.createAt).getHours() -
+            7 +
+            ':' +
+            new Date(e.createAt).getMinutes(),
+        }));
+
+      dispatch(setLastMessages(lastMess));
 
       dispatch(getConversations(res.data.conversations));
     } else {
@@ -157,6 +180,7 @@ export const {
   setCurrentConversation,
   getMembers,
   setMembers,
+  setLastMessages,
 } = actions;
 
 export default reducer;

@@ -24,7 +24,9 @@ const UserListing = ({navigation}) => {
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
   const {socket} = useSelector(state => state.socket);
+  const {lastMessages} = useSelector(state => state.conversation);
 
+  console.log('LAST MESS >>> ', lastMessages);
   // _id:"627784ba80a7cddb35c23955"
   // title:"1vs1"
   // createdAt:"2022-05-08T08:52:10.318Z"
@@ -74,6 +76,9 @@ const UserListing = ({navigation}) => {
   );
 
   const renderItem = ({item}) => {
+    const last = lastMessages.find(e => e._id === item._id);
+
+    console.log('D CM', last);
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -87,8 +92,13 @@ const UserListing = ({navigation}) => {
           <View style={styles.userDetailsSectionContainer}>
             <View>
               <Text style={styles.label1}>{item.title}</Text>
-              <Text style={styles.label2}>{item.lastMessage}</Text>
+              {last && (
+                <Text style={styles.label2}>
+                  {last.content} &#183; {last.createAt}
+                </Text>
+              )}
             </View>
+
             <Image source={images.checked} style={styles.checked} />
           </View>
         </View>

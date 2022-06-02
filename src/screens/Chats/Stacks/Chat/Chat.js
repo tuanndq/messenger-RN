@@ -30,7 +30,10 @@ import Story from '../../../../components/Story/Story';
 
 import {uploadFile} from '../../../../redux/uploadSlice';
 import {enumMessenger} from '../../../../utils/enum';
-import {fetchConversations} from '../../../../redux/conversationSlice';
+import {
+  fetchConversations,
+  setLastMessages,
+} from '../../../../redux/conversationSlice';
 
 const Chat = ({navigation, route}) => {
   const [messageList, setMessageList] = useState([]);
@@ -44,6 +47,7 @@ const Chat = ({navigation, route}) => {
 
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
+  const {lastMessages} = useSelector(state => state.conversation);
   const current_conversation =
     propsConversation ||
     useSelector(state => state.conversation.current_conversation);
@@ -89,6 +93,17 @@ const Chat = ({navigation, route}) => {
       messageData.type = enumMessenger.msgType.likeIcon;
     }
 
+    const newLastMess = lastMessages.map(e => {
+      if (e._id === current_conversation._id) {
+        return {
+          ...e,
+          content: messageData.message,
+        };
+      } else {
+        return e;
+      }
+    });
+    dispatch(setLastMessages(newLastMess));
     socket.emit('send_message', messageData);
     setMessageList([...messageList, messageData]);
     setText('');
