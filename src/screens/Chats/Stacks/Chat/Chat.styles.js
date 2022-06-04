@@ -47,7 +47,6 @@ export const styles = StyleSheet.create({
   backIcon: {
     height: 38,
     width: 38,
-    color: colors.mainColor,
     marginLeft: 8,
   },
   headerInfo: {

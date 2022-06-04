@@ -4,12 +4,12 @@ import {colors} from '../../theme/colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
   },
 
   coverPhoto: {
     width: '100%',
-    height: 200,
+    height: 250,
   },
 
   wallpaperContainer: {
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
 
   name: {
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 50,
     fontWeight: 'bold',
     fontSize: 30,
     color: 'black',

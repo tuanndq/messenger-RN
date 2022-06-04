@@ -6,14 +6,29 @@ import {postDataAPI} from '../../../utils/fetchData';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {setAlert} from '../../../redux/alertSlice';
 import {useSelector, useDispatch} from 'react-redux';
-import Toast from 'react-native-toast-message';
 import {colors} from 'react-native-elements';
+import {validateEmail} from '../../../utils/validate';
 
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
-  const alert = useSelector(state => state.alert);
+  const {forgotError} = useSelector(state => state.alert);
+  const [errors, setErrors] = useState({
+    email: '',
+  });
   const dispatch = useDispatch();
+
+  const validate = {
+    email: function (email) {
+      if (!email) {
+        setErrors({...errors, email: 'Please add your email.'});
+      } else if (!validateEmail(email)) {
+        setErrors({...errors, email: 'Please enter a valid email address.'});
+      } else {
+        setErrors({...errors, email: ''});
+      }
+    },
+  };
 
   const sendAccountGetOTP = async () => {
     try {
@@ -24,14 +39,11 @@ const ForgotPassword = ({navigation}) => {
 
         if (otp.data) {
           navigation.navigate('SendOTP', {email, otp: otp.data.otp});
+          dispatch(setAlert({type: 'forgotPassword', msg: ''}));
         }
       }
     } catch (e) {
-      dispatch(setAlert({type: 'forgotPassword', value: e.response.data.msg}));
-      Toast.show({
-        text1: alert.forgotPassword,
-        type: 'error',
-      });
+      dispatch(setAlert({type: 'forgotPassword', msg: e.response.data.msg}));
     }
   };
   return (
@@ -62,11 +74,33 @@ const ForgotPassword = ({navigation}) => {
         placeholder={'Please enter your email'}
         value={email}
         setValue={setEmail}
+        handleBlur={e => {
+          validate.email(e.nativeEvent.text);
+        }}
       />
+
+      {errors.email ? (
+        <Text style={{color: '#ff3333', alignSelf: 'flex-start'}}>
+          {errors.email}
+        </Text>
+      ) : null}
+
+      {forgotError ? (
+        <Text
+          style={{
+            backgroundColor: '#ffa00a',
+            color: '#fff',
+            borderRadius: 10,
+            padding: 10,
+            marginVertical: 10,
+          }}>
+          {forgotError}
+        </Text>
+      ) : null}
 
       <CustomButton onPress={sendAccountGetOTP} text="Submit" />
 
-      <Toast ref={ref => Toast.setRef(ref)} />
+      {/* <Toast ref={ref => Toast.setRef(ref)} /> */}
     </View>
   );
 };

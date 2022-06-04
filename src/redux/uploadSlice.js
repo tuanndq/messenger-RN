@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { postDataAPI, getDataAPI } from "../utils/fetchData";
-import { SERVER_URL } from "../utils/ip";
+import {createSlice} from '@reduxjs/toolkit';
+import {postDataAPI, getDataAPI} from '../utils/fetchData';
+import {SERVER_URL} from '../utils/ip';
 
 const uploadSlice = createSlice({
-  name: "upload",
+  name: 'upload',
   initialState: {
-    image: "",
-    video: "",
+    image: '',
+    video: '',
   },
   reducers: {
     getImageUrl(state) {
@@ -27,23 +27,22 @@ const uploadSlice = createSlice({
 export const uploadFile = async (uri, type, token) => {
   try {
     const formData = new FormData();
+
     formData.append(type, {
       uri: uri,
-      type: type === "image" ? "image/jpg" : "video/mp4",
-      name: "new_file",
+      type: type === 'image' ? 'image/jpg' : 'video/mp4',
+      name: 'new_file',
     });
 
     const response = await fetch(`${SERVER_URL}/upload/${type.toLowerCase()}`, {
-      method: "post",
+      method: 'post',
       body: formData,
       headers: {
-        "Content-Type": "multipart/form-data",
-        Accept: "application/json",
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
         Authorization: token,
       },
     });
-
-    console.log(response);
 
     let resJson = await response.json();
     return resJson.url;
@@ -52,8 +51,8 @@ export const uploadFile = async (uri, type, token) => {
   }
 };
 
-const { actions, reducer } = uploadSlice;
+const {actions, reducer} = uploadSlice;
 
-export const { getImageUrl, setImageUrl, getVideoUrl, setVideoUrl } = actions;
+export const {getImageUrl, setImageUrl, getVideoUrl, setVideoUrl} = actions;
 
 export default reducer;

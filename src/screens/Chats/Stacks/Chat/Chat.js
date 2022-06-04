@@ -74,7 +74,7 @@ const Chat = ({navigation, route}) => {
 
     const messageData = {
       room: current_conversation._id,
-      userName: sendUser.firstName,
+      userName: sendUser?.firstName,
       idUser: auth.id,
       avatar: sendUser.avatar,
       type: enumMessenger.msgType.text,
@@ -124,10 +124,6 @@ const Chat = ({navigation, route}) => {
     };
   }, [socket, messageList]);
 
-  useEffect(() => {
-    dispatch(fetchConversations(auth.id, auth.token));
-  }, [auth]);
-
   const handleText = emoji => {
     const appendEmoji = text + emoji;
     setText(appendEmoji);
@@ -149,8 +145,6 @@ const Chat = ({navigation, route}) => {
     setImage(null);
 
     const imageUrl = await uploadFile(tempImage, 'image', token);
-
-    console.log('IMAGE URL >>>', imageUrl);
 
     const messageData = {
       room: current_conversation._id,
@@ -200,6 +194,7 @@ const Chat = ({navigation, route}) => {
         {/* Back to Chats list button */}
         <TouchableOpacity
           onPress={() => {
+            dispatch(fetchConversations(auth.id, auth.token));
             navigation.navigate('Chats');
           }}>
           {/* <Feather name="chevron-left" style={styles.backIcon} /> */}

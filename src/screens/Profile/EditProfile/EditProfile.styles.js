@@ -1,32 +1,30 @@
-import { StyleSheet } from "react-native";
-import { colors } from "../../../theme/colors";
+import {StyleSheet} from 'react-native';
+import {colors} from '../../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     marginTop: 50,
   },
-   
+
   headerEdit: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingHorizontal: 10,
     paddingVertical: 10,
-    borderBottomWidth: 3,
-    borderBottomColor: colors.grayMain,
-    alignItems: "center",
-    position: 'relative'
+    alignItems: 'center',
+    position: 'relative',
   },
-  
+
   headerIcon: {
     fontSize: 24,
     color: colors.blackApp,
   },
-  
+
   headerText: {
     fontSize: 24,
     marginLeft: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.blackApp,
   },
 
@@ -49,25 +47,25 @@ export const styles = StyleSheet.create({
   },
 
   typeEditContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  
+
   typeEditText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
-  
+
   editText: {
     fontSize: 20,
     color: colors.secondColor,
   },
-  
+
   profileAvatar: {
     width: 150,
     height: 150,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginVertical: 20,
     borderRadius: 200,
   },
@@ -78,7 +76,7 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
   },
   textBio: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 20,
     marginVertical: 20,
     color: colors.gray02,
@@ -87,8 +85,8 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
   },
   aboutItem: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginHorizontal: 10,
     marginVertical: 5,
   },
@@ -104,21 +102,21 @@ export const styles = StyleSheet.create({
   },
   boldText: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   infoContainer: {
     marginVertical: 10,
     marginHorizontal: 20,
   },
   infoItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginVertical: 4,
-    alignItems: "center",
+    alignItems: 'center',
   },
   typeInfo: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   textInfo: {
     fontSize: 18,
@@ -127,7 +125,7 @@ export const styles = StyleSheet.create({
   modalViewBio: {
     paddingTop: 20,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 13,
     maxHeight: 240,
   },
@@ -135,7 +133,7 @@ export const styles = StyleSheet.create({
   modalViewInfo: {
     paddingTop: 20,
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 13,
     maxHeight: 560,
   },
@@ -147,21 +145,21 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.gray04,
     padding: 10,
-    color: "#000",
+    color: '#000',
   },
 
   modalTypeText: {
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: 10,
     fontSize: 20,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.blackApp,
   },
-  
+
   containerButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
     marginVertical: 15,
   },
   noteText: {

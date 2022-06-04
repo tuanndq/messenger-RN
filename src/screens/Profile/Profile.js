@@ -11,11 +11,13 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import Story from '../../components/Story/Story';
+import {launchImageLibrary} from 'react-native-image-picker';
 import {
   setConversations,
   setCurrentConversation,
 } from '../../redux/conversationSlice';
 import {getDataAPI, postDataAPI} from '../../utils/fetchData';
+import {createStory} from '../../redux/storySlice';
 
 const Profile = ({navigation, route}) => {
   const auth = useSelector(state => state.auth);
@@ -35,7 +37,7 @@ const Profile = ({navigation, route}) => {
     }
   }, [route.params?.otherUser, users]);
 
-  const fetchConversation = async (peerA, peerB, token, user) => {
+  const fetchCreateConversation = async (peerA, peerB, token, user) => {
     try {
       const res = await getDataAPI(
         `conversation/peers?peerA=${peerA}&peerB=${peerB}`,
@@ -76,11 +78,27 @@ const Profile = ({navigation, route}) => {
     }
   };
 
+  async function handleAddStory() {
+    const result = await launchImageLibrary({});
+
+    const uri = result.assets[0].uri;
+
+    if (!result.didCancel) {
+      dispatch(
+        createStory({
+          userId: auth.id,
+          content: uri,
+          type: 'image',
+          token: auth.token,
+        }),
+      );
+    }
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.wallpaperContainer}>
         {/* a.k.a back button */}
-
         <Ionicons
           name="arrow-back"
           onPress={() => {
@@ -88,10 +106,12 @@ const Profile = ({navigation, route}) => {
           }}
           style={styles.back}
         />
+
         <Image
           source={{uri: user.wallpaper} || images.wallpaper}
           style={styles.coverPhoto}
         />
+
         <Image source={images.take_photo} style={styles.cameraWallpaper} />
       </View>
 
@@ -103,7 +123,7 @@ const Profile = ({navigation, route}) => {
             user: user,
           })
         }>
-        <View style={styles.dpBlueRound}>
+        <View style={user?.stories?.length > 0 && styles.dpBlueRound}>
           <Image
             source={{uri: user.avatar} || images.avatar}
             style={styles.dp}
@@ -120,7 +140,11 @@ const Profile = ({navigation, route}) => {
         <View style={styles.tabContainer}>
           <View style={styles.tabImageContainer}>
             {user._id === auth.id ? (
-              <Image source={images.add_story} style={styles.icon_profile} />
+              <Ionicons
+                name="add"
+                style={{fontSize: 40, color: '#000'}}
+                onPress={handleAddStory}
+              />
             ) : (
               <Entypo name="eye" style={{fontSize: 40, color: '#000'}} />
             )}
@@ -142,7 +166,7 @@ const Profile = ({navigation, route}) => {
           }}>
           <View style={styles.tabImageContainer}>
             {user._id === auth.id ? (
-              <Image source={images.edit_button} style={styles.icon_profile} />
+              <FontAwesome name="edit" style={{fontSize: 40, color: '#000'}} />
             ) : (
               <Ionicons name="call" style={{fontSize: 40, color: '#000'}} />
             )}
@@ -158,7 +182,7 @@ const Profile = ({navigation, route}) => {
         <TouchableOpacity
           style={styles.tabContainer}
           onPress={() => {
-            fetchConversation(auth.id, user._id, auth.token, user).then(
+            fetchCreateConversation(auth.id, user._id, auth.token, user).then(
               data => {
                 navigation.navigate('Chat', {conversation: data});
               },

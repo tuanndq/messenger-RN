@@ -2,6 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {postDataAPI} from '../utils/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {addUser} from './userSlice';
+import {setAlert} from './alertSlice';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -9,20 +10,26 @@ export const register = createAsyncThunk(
     try {
       const res = await postDataAPI('auth/register', info);
 
-      dispatch(addUser(res.data));
+      console.log('REGISTER >>>', res.data);
 
       await AsyncStorage.setItem('@user_token', res.data.access_token);
 
+      await AsyncStorage.setItem('@id', res.data.user._id);
+
       return res.data;
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      const {data} = err.response;
+      console.log(err);
+      if (data && data.msg) {
+        dispatch(setAlert({type: 'register', msg: data.msg}));
+      }
     }
   },
 );
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (info, {rejectWithValue}) => {
+  async (info, {dispatch}) => {
     try {
       const res = await postDataAPI('auth/login', info);
 
@@ -32,7 +39,10 @@ export const login = createAsyncThunk(
 
       return res.data;
     } catch (err) {
-      console.log(err);
+      const {data} = err.response;
+      if (data && data.msg) {
+        dispatch(setAlert({type: 'login', msg: data.msg}));
+      }
     }
   },
 );
@@ -77,23 +87,19 @@ const authSlice = createSlice({
       state.email = email;
       state.id = _id;
     },
-    [login.rejected]: (state, action) => {
-      if (action.payload.error) {
-        state.error = action.payload.error;
-      }
-    },
+    [login.rejected]: (state, action) => {},
     [logout.fulfilled]: (state, action) => {
       state.token = '';
       state.email = '';
       state.id = '';
     },
     [register.fulfilled]: (state, action) => {
-      const {email, id} = action.payload.user;
+      const {email, _id} = action.payload.user;
       const {access_token} = action.payload;
 
       state.token = access_token;
       state.email = email;
-      state.id = id;
+      state.id = _id;
     },
     [register.rejected]: (state, action) => {
       if (action.payload.error) {

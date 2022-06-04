@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
-  Alert,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {images} from '../../../images';
@@ -28,6 +27,7 @@ import UserPermissions from '../../../utils/UserPermissions';
 import {getUsers, updateProfile} from '../../../redux/userSlice';
 import {uploadFile} from '../../../redux/uploadSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {validateName} from '../../../utils/validate';
 
 const EditProfile = ({navigation, route}) => {
   const {user} = route.params;
@@ -40,6 +40,11 @@ const EditProfile = ({navigation, route}) => {
   const [modalVisible, setModalVisible] = useState({
     information: false,
     bio: false,
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: '',
+    lastName: '',
   });
 
   const handleData = (field, text) => {
@@ -75,8 +80,49 @@ const EditProfile = ({navigation, route}) => {
     }
   };
 
+  const validate = {
+    firstName: function (firstName) {
+      if (!firstName) {
+        setErrors({...errors, firstName: 'Please add your first name.'});
+      } else if (!validateName(firstName)) {
+        setErrors({
+          ...errors,
+          firstName: 'Name can only contain non-numeric characters.',
+        });
+      } else {
+        setErrors({...errors, firstName: ''});
+      }
+    },
+    lastName: function (lastName) {
+      console.log(lastName);
+      if (!lastName) {
+        setErrors({...errors, lastName: 'Please add your last name.'});
+      } else if (!validateName(lastName)) {
+        setErrors({
+          ...errors,
+          lastName: 'Name can only contain non-numeric characters.',
+        });
+      } else {
+        setErrors({...errors, lastName: ''});
+      }
+    },
+  };
+
   const onUpdatePress = async () => {
     const newInfo = {...info};
+
+    if (!newInfo?.firstName) {
+      setErrors(preState => ({
+        ...preState,
+        firstName: 'Please add your first name.',
+      }));
+    }
+    if (!newInfo?.lastName) {
+      setErrors(preState => ({
+        ...preState,
+        lastName: 'Please add your last name.',
+      }));
+    }
 
     if (info.avatar !== user.avatar) {
       newInfo.avatar = await uploadFile(info.avatar, 'image', auth.token);
@@ -94,12 +140,6 @@ const EditProfile = ({navigation, route}) => {
       }),
     );
   };
-
-  useEffect(() => {
-    Toast.show({
-      text1: alert.updateProfile,
-    });
-  }, [alert]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -198,15 +238,13 @@ const EditProfile = ({navigation, route}) => {
                   style={{
                     ...styles.button,
                     backgroundColor: colors.grayMain,
-                  }}>
-                  <Text
-                    onPress={() => {
-                      setModalVisible({information: false});
+                  }}
+                  onPress={() => {
+                    setModalVisible({information: false});
 
-                      setInfo(infoTemp);
-                    }}>
-                    Cancel
-                  </Text>
+                    setInfo(infoTemp);
+                  }}>
+                  <Text>Cancel</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -273,8 +311,17 @@ const EditProfile = ({navigation, route}) => {
                     style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your first name..."
                     value={info.firstName}
+                    onEndEditing={e => {
+                      validate.firstName(e.nativeEvent.text.trim());
+                    }}
                   />
                 </View>
+
+                {errors.firstName ? (
+                  <Text style={{color: '#ff3333', alignSelf: 'flex-start'}}>
+                    {errors.firstName}
+                  </Text>
+                ) : null}
 
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>Last Name:</Text>
@@ -283,8 +330,17 @@ const EditProfile = ({navigation, route}) => {
                     style={{...styles.modalInput, height: 40, width: 180}}
                     placeholder="Input your last name..."
                     value={info.lastName}
+                    onEndEditing={e => {
+                      validate.lastName(e.nativeEvent.text.trim());
+                    }}
                   />
                 </View>
+
+                {errors.lastName ? (
+                  <Text style={{color: '#ff3333', alignSelf: 'flex-start'}}>
+                    {errors.lastName}
+                  </Text>
+                ) : null}
 
                 <View style={styles.infoItem}>
                   <Text style={styles.typeInfo}>Address:</Text>

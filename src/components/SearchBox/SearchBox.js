@@ -84,10 +84,10 @@ const SearchBox = ({userStore, navigation}) => {
       {users.length > 0 && (
         <View
           style={{
-            height: 500,
+            height: 600,
           }}>
           <FlatList
-            style={{height: 500}}
+            style={{height: 600}}
             data={users}
             renderItem={renderItem}
             keyExtractor={item => item._id}

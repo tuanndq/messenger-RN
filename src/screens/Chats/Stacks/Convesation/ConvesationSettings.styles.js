@@ -1,16 +1,16 @@
-import { StyleSheet } from "react-native";
-import { colors } from "../../../../theme/colors";
+import {StyleSheet} from 'react-native';
+import {colors} from '../../../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {
     marginTop: 24,
   },
   header: {
-    height: "6%",
-    flexDirection: "row",
+    height: '6%',
+    flexDirection: 'row',
     paddingHorizontal: 8,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   back_icon: {
     fontSize: 50,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   userInfo: {
     marginVertical: 8,
-    alignItems: "center",
+    alignItems: 'center',
   },
   avatar: {
     width: 125,
@@ -31,42 +31,43 @@ export const styles = StyleSheet.create({
   },
   username: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   status: {
-    fontWeight: "100",
+    fontWeight: '100',
   },
   actions: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 16,
-    justifyContent: "space-evenly",
+    justifyContent: 'space-evenly',
   },
   actions_content: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   actions_icon: {
     width: 40,
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: colors.gray01,
     borderRadius: 100,
   },
   action_text: {
     fontSize: 12,
+    color: colors.zblack,
   },
   settingList: {
     marginHorizontal: 16,
   },
   settingList_item: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingVertical: 12,
   },
   blur_text: {
-    color: colors.gray02,
+    color: colors.blackApp,
   },
   settingList_item_text: {
     fontSize: 15,

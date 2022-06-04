@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
-import {colors} from '../../../theme/colors';
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../theme/colors';
 
 export const styles = StyleSheet.create({
   container: {},
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     flex: 1,
-    borderRadius: 100,
+    borderRadius: 50,
   },
   userDetailsSectionContainer: {
     marginLeft: 15,

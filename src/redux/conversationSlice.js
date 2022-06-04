@@ -1,5 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {postDataAPI, getDataAPI} from '../utils/fetchData';
+import moment from 'moment';
+
+export const defaultAvatarGroupChat =
+  'https://preview.redd.it/hz1l8524rqv61.png?width=2926&format=png&auto=webp&s=1a6a33e36e9b594fd6ed77ee3e9ad7794ae25d39';
 
 const conversationSlice = createSlice({
   name: 'conversation',
@@ -58,27 +62,26 @@ export const fetchConversations = (userId, token) => async dispatch => {
           } else {
             console.log(peerRes);
           }
+        } else {
+          // setup default avatar for conversations
+          conversation.avatar = defaultAvatarGroupChat;
         }
       }
 
-      const res1 = await getDataAPI(`message/last`, token);
+      // const res1 = await getDataAPI(`message/last`, token);
 
-      const {lastMessages} = res1.data;
+      // const {lastMessages} = res1.data;
 
-      const mapMess = res.data.conversations.map(e => e._id);
+      // const mapMess = res.data.conversations.map(e => e._id);
 
-      const lastMess = lastMessages
-        .filter(mess => mapMess.includes(mess._id))
-        .map(e => ({
-          ...e,
-          createAt:
-            new Date(e.createAt).getHours() -
-            7 +
-            ':' +
-            new Date(e.createAt).getMinutes(),
-        }));
+      // const lastMess = lastMessages
+      //   .filter(mess => mapMess.includes(mess._id))
+      //   .map(e => ({
+      //     ...e,
+      //     createdAt: moment(e.createdAt).format('HH:mm'),
+      //   }));
 
-      dispatch(setLastMessages(lastMess));
+      // dispatch(setLastMessages(lastMess));
 
       dispatch(getConversations(res.data.conversations));
     } else {
@@ -158,7 +161,7 @@ export const fetchMembers = (conversationId, token) => async dispatch => {
 export const fetchCreateConversation =
   (title, members, token) => async dispatch => {
     try {
-      const res = await postDataAPI('conversation', {title, members}, token);
+      const res = await postDataAPI('conversation/', {title, members}, token);
 
       if (res.status === 201) {
         console.log(res.data);

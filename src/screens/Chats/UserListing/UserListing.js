@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 
@@ -7,26 +7,17 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {styles} from './UserListing.styles';
 import {images} from '../../../images';
 import {setCurrentConversation} from '../../../redux/conversationSlice';
+import {getDataAPI} from '../../../utils/fetchData';
+import moment from 'moment';
 
-const UserListing = ({navigation}) => {
-  // let Data = [
-  //   {
-  //     id: 1,
-  //     name: "Martin Randolph",
-  //     image: images.user_1,
-  //     lastMessage: "You: What's man! · 9:40 AM ",
-  //   },
-  // ];
-
+const UserListing = ({navigation, lastMessages}) => {
   const dispatch = useDispatch();
 
-  let Data = useSelector(state => state.conversation.conversations);
+  const conversations = useSelector(state => state.conversation.conversations);
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
   const {socket} = useSelector(state => state.socket);
-  const {lastMessages} = useSelector(state => state.conversation);
 
-  console.log('LAST MESS >>> ', lastMessages);
   // _id:"627784ba80a7cddb35c23955"
   // title:"1vs1"
   // createdAt:"2022-05-08T08:52:10.318Z"
@@ -75,10 +66,41 @@ const UserListing = ({navigation}) => {
     </View>
   );
 
+  const photoOrContent = (last, item) => {
+    if (last.msgType === 1) {
+      if (last.senderId === auth.id) {
+        return 'You sent a photo';
+      } else {
+        return item + ' send a photo';
+      }
+    } else if (last.msgType === 2) {
+      if (last.senderId === auth.id) {
+        return 'You sent a video';
+      } else {
+        return item + ' send a video';
+      }
+    } else if (last.msgType === 3) {
+      if (last.senderId === auth.id) {
+        return 'You sent a like';
+      } else {
+        return item + ' send a like';
+      }
+    } else {
+      return last.content;
+    }
+  };
+
   const renderItem = ({item}) => {
     const last = lastMessages.find(e => e._id === item._id);
 
-    console.log('D CM', last);
+    let sender;
+
+    if (last) {
+      sender = users.find(u => u._id === last.senderId);
+    }
+
+    const senderName = sender?.lastName;
+
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -94,7 +116,8 @@ const UserListing = ({navigation}) => {
               <Text style={styles.label1}>{item.title}</Text>
               {last && (
                 <Text style={styles.label2}>
-                  {last.content} &#183; {last.createAt}
+                  {last.senderId === auth.id ? 'You' : senderName}:{' '}
+                  {photoOrContent(last, senderName)} &#183; {last.createdAt}
                 </Text>
               )}
             </View>
@@ -124,7 +147,7 @@ const UserListing = ({navigation}) => {
 
   return (
     <SwipeListView
-      data={Data}
+      data={conversations}
       renderItem={renderItem}
       renderHiddenItem={renderHiddenItem}
       leftOpenValue={180}
