@@ -34,6 +34,7 @@ import {
   fetchConversations,
   setLastMessages,
 } from '../../../../redux/conversationSlice';
+import {socket} from '../../../../utils/socket';
 
 const Chat = ({navigation, route}) => {
   const [messageList, setMessageList] = useState([]);
@@ -57,7 +58,6 @@ const Chat = ({navigation, route}) => {
 
   // console.log("Message list: ", messageList);
 
-  const {socket} = useSelector(state => state.socket);
   const {token} = useSelector(state => state.auth);
   const dispatch = useDispatch();
 

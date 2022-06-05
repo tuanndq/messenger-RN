@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 
@@ -7,8 +7,7 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 import {styles} from './UserListing.styles';
 import {images} from '../../../images';
 import {setCurrentConversation} from '../../../redux/conversationSlice';
-import {getDataAPI} from '../../../utils/fetchData';
-import moment from 'moment';
+import {socket} from '../../../utils/socket';
 
 const UserListing = ({navigation, lastMessages}) => {
   const dispatch = useDispatch();
@@ -16,7 +15,6 @@ const UserListing = ({navigation, lastMessages}) => {
   const conversations = useSelector(state => state.conversation.conversations);
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
-  const {socket} = useSelector(state => state.socket);
 
   // _id:"627784ba80a7cddb35c23955"
   // title:"1vs1"

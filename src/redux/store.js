@@ -12,7 +12,6 @@ import storySlice from './storySlice';
 import uploadSlice from './uploadSlice';
 import messageSlice from './messageSlice';
 import conversationSlice from './conversationSlice';
-import socketSlice from './socketSlice';
 import videoSlice from './videoSlice';
 import alertSlice from './alertSlice';
 const composedEnhancers = composeWithDevTools();
@@ -25,7 +24,6 @@ const appReducer = combineReducers({
   upload: uploadSlice,
   message: messageSlice,
   conversation: conversationSlice,
-  socket: socketSlice,
   // video: videoSlice,
   alert: alertSlice,
 });

@@ -213,6 +213,28 @@ const Story = ({navigation, route}) => {
     close();
   }
 
+  const formatDate = time => {
+    const dateConvert = new Date(time);
+    const start = new Date(time).getTime();
+    const end = new Date(Date.now()).getTime();
+    const milliseconds = Math.abs(end - start).toString();
+    const seconds = parseInt(milliseconds / 1000);
+    const minutes = parseInt(seconds / 60);
+    const hours = parseInt(minutes / 60);
+
+    if (minutes < 1) {
+      return seconds + 's';
+    }
+
+    if (hours < 1) {
+      return minutes + 'm';
+    }
+
+    if (hours < 24) {
+      return hours + 'h';
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="black" barStyle="light-content" />
@@ -304,6 +326,14 @@ const Story = ({navigation, route}) => {
                       paddingLeft: 10,
                     }}>
                     {user?.fullName}
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: 'white',
+                      paddingLeft: 10,
+                    }}>
+                    {formatDate(content[current]?.createdAt)}
                   </Text>
                 </View>
                 {/* END OF THE AVATAR AND USERNAME */}

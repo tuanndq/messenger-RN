@@ -70,7 +70,7 @@ const StorySlider = ({navigation, loggedUser}) => {
         onPress={handlePickerAvatar}>
         <Feather style={{fontSize: 60}} name="plus" />
 
-        <Text style={styles.userName}>Your Story</Text>
+        <Text style={styles.userName}>Add Story</Text>
       </TouchableOpacity>
 
       <FlatList

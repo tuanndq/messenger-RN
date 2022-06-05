@@ -18,13 +18,13 @@ import {
 } from '../../redux/conversationSlice';
 import {getDataAPI, postDataAPI} from '../../utils/fetchData';
 import {createStory} from '../../redux/storySlice';
+import {socket} from '../../utils/socket';
 
 const Profile = ({navigation, route}) => {
   const auth = useSelector(state => state.auth);
   const [user, setUser] = useState({});
   const dispatch = useDispatch();
   const users = useSelector(state => state.user.users);
-  const {socket} = useSelector(state => state.socket);
 
   useEffect(() => {
     const otherUser = route.params?.otherUser;

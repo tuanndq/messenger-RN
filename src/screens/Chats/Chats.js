@@ -27,6 +27,50 @@ const Chats = ({navigation}) => {
     setLoggedUser(loggedUser);
   }, [users]);
 
+  const formatTime = time => {
+    const dateConvert = new Date(time);
+    const start = new Date(time).getTime();
+    const end = new Date(Date.now()).getTime();
+    const milliseconds = Math.abs(end - start).toString();
+    const seconds = parseInt(milliseconds / 1000);
+    const minutes = parseInt(seconds / 60);
+    const hours = parseInt(minutes / 60);
+    const days = parseInt(hours / 24);
+
+    if (days > 7) {
+      const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      return months[dateConvert.getMonth()] + ' ' + dateConvert.getDate();
+    } else if (days <= 7) {
+      if (dateConvert.getDate() !== new Date().getDate()) {
+        const weekday = [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ];
+        return weekday[dateConvert.getDay()];
+      } else {
+        return moment(time).format('HH:mm');
+      }
+    }
+  };
+
   useEffect(() => {
     const getLastMess = async () => {
       const res1 = await getDataAPI(`message/last`, auth.token);
@@ -37,7 +81,7 @@ const Chats = ({navigation}) => {
         .filter(mess => mapMess.includes(mess._id))
         .map(e => ({
           ...e,
-          createdAt: moment(e.createdAt).format('HH:mm'),
+          createdAt: formatTime(e.createdAt),
         }));
 
       setLastMessages(lastMess);

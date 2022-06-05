@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import io from 'socket.io-client';
 
 import store from './src/redux/store';
 import {images} from './src/images';
@@ -25,8 +24,6 @@ import Camera from './src/screens/Camera/Camera';
 
 import {isAuthenticated} from './src/redux/authSlice';
 import {getUserInfo, getUsers} from './src/redux/userSlice';
-import {SOCKER_SERVER_URL} from './src/utils/ip';
-import {getSocket} from './src/redux/socketSlice';
 import ForgotPassword from './src/screens/Auth/ForgotPassword/ForgotPassword';
 import SendOTP from './src/screens/Auth/ForgotPassword/SendOTP';
 import ChangePassword from './src/screens/Auth/ForgotPassword/ChangePassword';
@@ -134,14 +131,6 @@ const Container = () => {
     if (!auth.token) {
       getToken();
     }
-  }, []);
-
-  useEffect(() => {
-    const socket = io(SOCKER_SERVER_URL, {
-      transports: ['websocket'],
-      jsonp: false,
-    });
-    dispatch(getSocket(socket));
   }, []);
 
   return (
