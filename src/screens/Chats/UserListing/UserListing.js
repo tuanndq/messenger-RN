@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 
@@ -6,8 +6,12 @@ import {SwipeListView} from 'react-native-swipe-list-view';
 
 import {styles} from './UserListing.styles';
 import {images} from '../../../images';
-import {setCurrentConversation} from '../../../redux/conversationSlice';
+import {
+  fetchConversations,
+  setCurrentConversation,
+} from '../../../redux/conversationSlice';
 import {socket} from '../../../utils/socket';
+import {deleteDataAPI} from '../../../utils/fetchData';
 
 const UserListing = ({navigation, lastMessages}) => {
   const dispatch = useDispatch();
@@ -46,6 +50,19 @@ const UserListing = ({navigation, lastMessages}) => {
   //   });
   // }, [rooms]);
 
+  const handleDelete = async data => {
+    try {
+      await deleteDataAPI(
+        `conversation/${data.item._id}?offset=${data.item.cntMessages.length}`,
+        auth.token,
+      );
+
+      dispatch(fetchConversations(auth.id, auth.token));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const renderHiddenItem = (data, rowMap) => (
     <View style={styles.rowBack}>
       <View style={styles.itemRowWrapper}>
@@ -59,7 +76,12 @@ const UserListing = ({navigation, lastMessages}) => {
           source={images.converation_settings}
         />
         <Image style={styles.itemRowIcon} source={images.notifications} />
-        <Image style={styles.itemRowIcon} source={images.delete_conversation} />
+        <TouchableOpacity onPress={() => handleDelete(data)}>
+          <Image
+            style={styles.itemRowIcon}
+            source={images.delete_conversation}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );

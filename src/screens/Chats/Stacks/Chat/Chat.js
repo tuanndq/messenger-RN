@@ -104,15 +104,30 @@ const Chat = ({navigation, route}) => {
       }
     });
     dispatch(setLastMessages(newLastMess));
-    socket.emit('send_message', messageData);
+    socket.emit('send_message', {
+      messageData,
+      currentCon: current_conversation,
+    });
     setMessageList([...messageList, messageData]);
     setText('');
   };
 
   useEffect(() => {
     const handler = data => {
+      const checkUser = current_conversation?.members.find(
+        e => e.idUser === auth.id,
+      );
+
       if (Array.isArray(data)) {
-        setMessageList([...messageList, ...data]);
+        if (checkUser.offset !== 0) {
+          let dataSplice = [];
+          for (let i = checkUser.offset; i < data.length; i++) {
+            dataSplice.push(data[i]);
+          }
+
+          console.log(dataSplice);
+          setMessageList([...messageList, ...dataSplice]);
+        } else setMessageList([...messageList, ...data]);
       } else {
         setMessageList([...messageList, data]);
       }

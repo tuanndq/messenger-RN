@@ -46,14 +46,18 @@ export const fetchConversations = (userId, token) => async dispatch => {
   try {
     const res = await getDataAPI(`conversation/user/${userId}`, token);
 
+    const conversations = [];
     if (res.status === 200) {
-      // Change title of Conversations whose title = '1vs1' into peerName\
+      // Change title of Conversations whose title = '1vs1' into peerName
+
       for (const conversation of res.data.conversations) {
-        if (conversation.title === '1vs1') {
+        const loggedIn = conversation.members.find(e => e.idUser === userId);
+        if (conversation.title === '1vs1' && loggedIn.show) {
           let peerId =
-            userId === conversation.members[0]
-              ? conversation.members[1]
-              : conversation.members[0];
+            userId === conversation.members[0].idUser
+              ? conversation.members[1].idUser
+              : conversation.members[0].idUser;
+
           const peerRes = await getDataAPI(`user/${peerId}`, token);
 
           if (peerRes.status === 200) {
@@ -62,6 +66,8 @@ export const fetchConversations = (userId, token) => async dispatch => {
           } else {
             console.log(peerRes);
           }
+
+          conversations.push(conversation);
         } else {
           // setup default avatar for conversations
           conversation.avatar = defaultAvatarGroupChat;
@@ -83,7 +89,7 @@ export const fetchConversations = (userId, token) => async dispatch => {
 
       // dispatch(setLastMessages(lastMess));
 
-      dispatch(getConversations(res.data.conversations));
+      dispatch(getConversations(conversations));
     } else {
       console.log(res);
     }

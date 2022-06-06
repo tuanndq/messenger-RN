@@ -10,8 +10,6 @@ export const register = createAsyncThunk(
     try {
       const res = await postDataAPI('auth/register', info);
 
-      console.log('REGISTER >>>', res.data);
-
       await AsyncStorage.setItem('@user_token', res.data.access_token);
 
       await AsyncStorage.setItem('@id', res.data.user._id);
