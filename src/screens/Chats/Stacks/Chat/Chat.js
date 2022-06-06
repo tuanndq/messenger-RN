@@ -124,8 +124,6 @@ const Chat = ({navigation, route}) => {
           for (let i = checkUser.offset; i < data.length; i++) {
             dataSplice.push(data[i]);
           }
-
-          console.log(dataSplice);
           setMessageList([...messageList, ...dataSplice]);
         } else setMessageList([...messageList, ...data]);
       } else {

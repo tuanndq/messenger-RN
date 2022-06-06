@@ -70,7 +70,6 @@ const ChangePassword = ({navigation, route}) => {
           confirmPassword: 'Please confirm your password.',
         });
       } else if (!validateConfirmPassword(confirmPassword, password)) {
-        console.log(confirmPassword, password);
         setErrors({
           ...errors,
           confirmPassword:
