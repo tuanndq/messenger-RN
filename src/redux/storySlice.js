@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import {postDataAPI} from '../utils/fetchData';
+import {deleteDataAPI, postDataAPI} from '../utils/fetchData';
 import {uploadFile} from './uploadSlice';
 import {getUsers} from './userSlice';
 
@@ -34,7 +34,7 @@ export const deleteStory = createAsyncThunk(
   'user/deleteStory',
   async ({userId, storyId, token}, {rejectWithValue}) => {
     try {
-      const response = await deleteStory(`user/story/${storyId}`, token);
+      const response = await deleteDataAPI(`user/story/${storyId}`, token);
       return {deleteStoryMsg: response.data, userId, storyId};
     } catch (error) {
       console.log(error);
@@ -74,7 +74,7 @@ const storySlice = createSlice({
       });
     },
     [deleteStory.fulfilled]: (state, action) => {
-      state.storiesExist = state.stories.map(e => {
+      state.storiesExist = state.stories?.map(e => {
         if (e._id === action.payload.userId) {
           return {
             ...e,

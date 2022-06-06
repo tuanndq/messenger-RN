@@ -12,16 +12,18 @@ import {
   Button,
   TouchableOpacity,
   BackHandler,
+  Alert,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {launchImageLibrary} from 'react-native-image-picker';
 
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Video from 'react-native-video';
 import {useDispatch, useSelector} from 'react-redux';
-import {removeStoriesExist} from '../../redux/storySlice';
+import {deleteStory, removeStoriesExist} from '../../redux/storySlice';
 import {createStory} from '../../redux/storySlice';
 
 const {width, height} = Dimensions.get('window');
@@ -213,6 +215,39 @@ const Story = ({navigation, route}) => {
     close();
   }
 
+  function handleDeleteStory() {
+    Animated.timing(progress, {}).stop();
+    Alert.alert(
+      'Delete story',
+      'Are you sure to delete this story?',
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            dispatch(
+              deleteStory({
+                userId: auth.id,
+                storyId: content[current]['_id'],
+                token: auth.token,
+              }),
+            ),
+              close();
+          },
+          style: 'cancel',
+        },
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () => {},
+      },
+    );
+  }
+
   const formatDate = time => {
     const dateConvert = new Date(time);
     const start = new Date(time).getTime();
@@ -337,6 +372,28 @@ const Story = ({navigation, route}) => {
                   </Text>
                 </View>
                 {/* END OF THE AVATAR AND USERNAME */}
+
+                {/* THE MORE BUTTON */}
+                <TouchableOpacity
+                  onPress={() => {
+                    handleDeleteStory();
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: 50,
+                      margin: 0,
+                      padding: 0,
+                    }}>
+                    <AntDesign
+                      name="delete"
+                      style={{fontSize: 20, color: 'white'}}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* END OF MORE BUTTON */}
+
                 {/* THE CLOSE BUTTON */}
                 <TouchableOpacity
                   onPress={() => {
@@ -347,7 +404,7 @@ const Story = ({navigation, route}) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       height: 50,
-                      paddingHorizontal: 15,
+                      paddingHorizontal: 1,
                     }}>
                     <FontAwesome
                       name="close"
