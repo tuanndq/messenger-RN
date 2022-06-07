@@ -372,46 +372,51 @@ const Story = ({navigation, route}) => {
                   </Text>
                 </View>
                 {/* END OF THE AVATAR AND USERNAME */}
+                <View style={{display: 'flex', flexDirection: 'row'}}>
+                  {/* THE MORE BUTTON */}
+                  {user._id === auth.id && (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleDeleteStory();
+                      }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          height: 50,
+                        }}>
+                        <AntDesign
+                          name="delete"
+                          style={{
+                            fontSize: 20,
+                            marginRight: 10,
+                            color: 'white',
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                  {/* END OF MORE BUTTON */}
 
-                {/* THE MORE BUTTON */}
-                <TouchableOpacity
-                  onPress={() => {
-                    handleDeleteStory();
-                  }}>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 50,
-                      margin: 0,
-                      padding: 0,
+                  {/* THE CLOSE BUTTON */}
+                  <TouchableOpacity
+                    onPress={() => {
+                      close();
                     }}>
-                    <AntDesign
-                      name="delete"
-                      style={{fontSize: 20, color: 'white'}}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* END OF MORE BUTTON */}
-
-                {/* THE CLOSE BUTTON */}
-                <TouchableOpacity
-                  onPress={() => {
-                    close();
-                  }}>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      height: 50,
-                      paddingHorizontal: 1,
-                    }}>
-                    <FontAwesome
-                      name="close"
-                      style={{fontSize: 20, color: 'white'}}
-                    />
-                  </View>
-                </TouchableOpacity>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 50,
+                        paddingHorizontal: 1,
+                      }}>
+                      <FontAwesome
+                        name="close"
+                        style={{fontSize: 20, color: 'white'}}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </View>
                 {/* END OF CLOSE BUTTON */}
               </View>
               {/* HERE IS THE HANDLE FOR PREVIOUS AND NEXT PRESS */}
