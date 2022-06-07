@@ -39,7 +39,22 @@ const userSlice = createSlice({
   initialState: {
     users: [],
   },
-  reducers: {},
+  reducers: {
+    updateStoryUser: (state, action) => {
+      state.users = state.users.map(e => {
+        if (e._id === action.payload.userId) {
+          return {
+            ...e,
+            stories: e.stories.filter(
+              story => story._id !== action.payload.storyId,
+            ),
+          };
+        } else {
+          return e;
+        }
+      });
+    },
+  },
   extraReducers: {
     [getUsers.fulfilled]: (state, action) => {
       const mapStories = action.payload.map(e => ({
@@ -65,6 +80,6 @@ const userSlice = createSlice({
 });
 
 const {actions, reducer} = userSlice;
-export const {} = actions;
+export const {updateStoryUser} = actions;
 
 export default reducer;

@@ -68,9 +68,10 @@ export const fetchConversations = (userId, token) => async dispatch => {
           }
 
           conversations.push(conversation);
-        } else {
+        } else if (conversation.title !== '1vs1' && loggedIn.show) {
           // setup default avatar for conversations
           conversation.avatar = defaultAvatarGroupChat;
+          conversations.push(conversation);
         }
       }
 

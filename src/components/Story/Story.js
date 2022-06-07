@@ -375,10 +375,7 @@ const Story = ({navigation, route}) => {
                 <View style={{display: 'flex', flexDirection: 'row'}}>
                   {/* THE MORE BUTTON */}
                   {user._id === auth.id && (
-                    <TouchableOpacity
-                      onPress={() => {
-                        handleDeleteStory();
-                      }}>
+                    <TouchableOpacity onPress={handleDeleteStory}>
                       <View
                         style={{
                           alignItems: 'center',

@@ -172,7 +172,7 @@ const Chat = ({navigation, route}) => {
         new Date(Date.now()).getMinutes(),
     };
 
-    socket.emit('send_message', messageData);
+    socket.emit('send_message', {messageData});
     setMessageList([...messageList, messageData]);
   };
 
@@ -195,7 +195,7 @@ const Chat = ({navigation, route}) => {
         new Date(Date.now()).getMinutes(),
     };
 
-    socket.emit('send_message', messageData);
+    socket.emit('send_message', {messageData});
     setMessageList([...messageList, messageData]);
   };
 
