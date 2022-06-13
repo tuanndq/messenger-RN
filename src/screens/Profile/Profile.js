@@ -44,22 +44,28 @@ const Profile = ({navigation, route}) => {
         token,
       );
 
+      console.log('RESS >>>>', res);
+
       if (res.status === 200) {
         const peerRes = await getDataAPI(`user/${peerB}`, token);
 
         if (peerRes.status === 200) {
           res.data[0].title = peerRes.data.fullName;
           res.data[0].avatar = peerRes.data.avatar;
-        } else {
-          console.log(peerRes);
         }
 
         dispatch(setCurrentConversation(res.data[0]));
         socket.emit('join_room', res.data[0]._id);
-      } else if (res.status === 204) {
+      } else if (res.status !== 200) {
         const createNew1vs1 = await postDataAPI(
           'conversation',
-          {title: '1vs1', members: [peerA, peerB]},
+          {
+            title: '1vs1',
+            members: [
+              {idUser: peerA, show: false, offset: 0},
+              {idUser: peerB, show: false, offset: 0},
+            ],
+          },
           token,
         );
 

@@ -94,7 +94,6 @@ const EditProfile = ({navigation, route}) => {
       }
     },
     lastName: function (lastName) {
-      console.log(lastName);
       if (!lastName) {
         setErrors({...errors, lastName: 'Please add your last name.'});
       } else if (!validateName(lastName)) {
