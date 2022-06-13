@@ -32,6 +32,7 @@ import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
 import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
 import GroupChat from './src/screens/GroupChat/GroupChat';
 import {colors} from './src/theme/colors';
+import VideoCall from './src/screens/VideoCall/module/VideoCall';
 
 const Tab = createBottomTabNavigator();
 
@@ -181,6 +182,13 @@ const Container = () => {
         <Stack.Screen
           name="Chat"
           component={Chat}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="VideoCall"
+          component={VideoCall}
           options={{
             headerShown: false,
           }}
