@@ -243,11 +243,12 @@ const Chat = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
 
-        {/* Some action buttons (call, call video) */}
+        {/* Some action buttons (voice call, video call) */}
         <View style={styles.header_actions}>
           <TouchableOpacity
             onPress={() => {
               console.log('Call pressed');
+              navigation.navigate('OutgoingCall');
             }}>
             <Image source={images.phone} style={styles.iconPhone} />
           </TouchableOpacity>
@@ -255,6 +256,7 @@ const Chat = ({navigation, route}) => {
           <TouchableOpacity
             onPress={() => {
               console.log('Video pressed');
+              navigation.navigate('IncomingCall');
             }}>
             <Image
               source={images.video_call_chat}
