@@ -196,13 +196,13 @@ const Container = () => {
             headerShown: false,
           }}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="WebRTCCall"
           component={WebRTCCall}
           options={{
             headerShown: false,
           }}
-        /> */}
+        />
         <Stack.Screen
           name="Chat"
           component={Chat}
@@ -210,6 +210,7 @@ const Container = () => {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Camera"
           component={Camera}
