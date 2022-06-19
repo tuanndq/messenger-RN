@@ -47,8 +47,6 @@ export const fetchSendMessage =
 
       if (res.status === 201) {
         return res.data;
-      } else {
-        console.log(res);
       }
     } catch (err) {
       console.log(err);

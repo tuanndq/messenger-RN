@@ -32,10 +32,6 @@ const GroupChat = ({navigation}) => {
   const [preMembers, setPreMembers] = useState([]);
   const [title, setTitle] = useState('');
 
-  useEffect(() => {
-    console.log(preMembers);
-  }, [preMembers]);
-
   // Three main functions
   const addPreMember = member => {
     if (!preMembers.includes(member)) {
@@ -46,7 +42,6 @@ const GroupChat = ({navigation}) => {
   const removePreMember = member => {
     const preMembersTemp = preMembers.filter(item => item._id !== member._id);
     setPreMembers(preMembersTemp);
-    console.log(preMembers);
   };
 
   const fetchCreateGroupChat = async () => {
@@ -74,12 +69,9 @@ const GroupChat = ({navigation}) => {
         );
 
         if (res.status === 201) {
-          console.log(res);
           res.data.avatar = defaultAvatarGroupChat;
           dispatch(setConversations(res.data));
           return res.data;
-        } else {
-          console.log(res);
         }
       } catch (err) {
         console.log(err);

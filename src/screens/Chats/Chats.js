@@ -11,6 +11,7 @@ import {styles} from './Chat.styles';
 import UserListing from './UserListing/UserListing';
 import moment from 'moment';
 import {fetchConversations} from '../../redux/conversationSlice';
+import {socket} from '../../utils/socket';
 
 const Chats = ({navigation}) => {
   const auth = useSelector(state => state.auth);
@@ -90,6 +91,30 @@ const Chats = ({navigation}) => {
     getLastMess();
     // dispatch(setLastMessages(lastMess));
   }, [conversations]);
+
+  useEffect(() => {
+    socket.on('last_message', data => {
+      const newLastMsgs = lastMessages.map(e => {
+        if (e._id === data.room) {
+          return {
+            _id: data.room,
+            content: data.message,
+            msgType: data.type,
+            senderId: data.idUser,
+            createdAt: formatTime(Date.now()),
+          };
+        } else {
+          return e;
+        }
+      });
+
+      setLastMessages(newLastMsgs);
+    });
+
+    return () => {
+      socket.off('receive_last_msg');
+    };
+  }, [socket, lastMessages]);
 
   useEffect(() => {
     dispatch(fetchConversations(auth.id, auth.token));

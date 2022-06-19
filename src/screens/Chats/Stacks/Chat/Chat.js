@@ -52,6 +52,7 @@ const Chat = ({navigation, route}) => {
   const current_conversation =
     propsConversation ||
     useSelector(state => state.conversation.current_conversation);
+
   // const currentMessages = useSelector(
   //   (state) => state.message.currentMessages.messages
   // );
@@ -66,6 +67,32 @@ const Chat = ({navigation, route}) => {
 
     return user;
   }, [users, auth]);
+
+  const receiveUser = useMemo(() => {
+    const user = users.find(
+      user => user._id === current_conversation.members[1].idUser,
+    );
+
+    return user;
+  }, [users, current_conversation]);
+
+  const startVideoCall = () => {
+    navigation.push('WebRTCCall', {
+      sender: sendUser,
+      receiver: receiveUser,
+      conversationId: current_conversation?._id,
+      isVideoCall: true,
+    });
+  };
+
+  const startVoiceCall = () => {
+    navigation.push('WebRTCCall', {
+      sender: sendUser,
+      receiver: receiveUser,
+      conversationId: current_conversation?._id,
+      isVideoCall: false,
+    });
+  };
 
   const sendMessage = (sendLikeIcon = false) => {
     if (showEmoji) {
@@ -245,19 +272,11 @@ const Chat = ({navigation, route}) => {
 
         {/* Some action buttons (voice call, video call) */}
         <View style={styles.header_actions}>
-          <TouchableOpacity
-            onPress={() => {
-              console.log('Call pressed');
-              navigation.navigate('OutgoingCall');
-            }}>
+          <TouchableOpacity onPress={startVoiceCall}>
             <Image source={images.phone} style={styles.iconPhone} />
           </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              console.log('Video pressed');
-              navigation.navigate('IncomingCall');
-            }}>
+          <TouchableOpacity onPress={startVideoCall}>
             <Image
               source={images.video_call_chat}
               style={styles.iconVideoCall}

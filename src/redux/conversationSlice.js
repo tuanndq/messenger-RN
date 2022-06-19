@@ -63,8 +63,6 @@ export const fetchConversations = (userId, token) => async dispatch => {
           if (peerRes.status === 200) {
             conversation.title = peerRes.data.fullName;
             conversation.avatar = peerRes.data.avatar;
-          } else {
-            console.log(peerRes);
           }
 
           conversations.push(conversation);

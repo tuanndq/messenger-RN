@@ -34,6 +34,8 @@ import GroupChat from './src/screens/GroupChat/GroupChat';
 import {colors} from './src/theme/colors';
 import OutgoingCall from './src/screens/Call/VoiceCall/OutgoingCall';
 import IncomingCall from './src/screens/Call/VoiceCall/IncomingCall';
+import {socket} from './src/utils/socket';
+import {WebRTCCall} from './src/screens/WebRTCCall/WebRTCCall';
 
 const Tab = createBottomTabNavigator();
 
@@ -135,6 +137,22 @@ const Container = () => {
     }
   }, []);
 
+  useEffect(() => {
+    socket.on(
+      'video-call-start',
+      ({senderId, receiverId, chatBoxId, offer, isVideoCall}) => {
+        navigation.push('WebRTCCall', {
+          senderId: receiverId,
+          receiverId: senderId,
+          chatBoxId,
+          isCaller: false,
+          sdp: offer,
+          isVideoCall,
+        });
+      },
+    );
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -181,12 +199,20 @@ const Container = () => {
           }}
         />
         <Stack.Screen
+          name="WebRTCCall"
+          component={WebRTCCall}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
           name="Chat"
           component={Chat}
           options={{
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="Camera"
           component={Camera}
