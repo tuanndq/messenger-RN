@@ -9,20 +9,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {styles} from './ConvesationSettings.styles';
-import {colors} from '../../../../theme/colors';
-import {useSelector} from 'react-redux';
 
 export default function ConversationSettings({route, navigation}) {
   const avatar = route.params.avatar;
-  const [selectedUser, setSelectedUser] = useState({});
-  const {users} = route.params;
-  const {username, status, idReceive} = route.params.userInfo;
+  const {username, status, receiveUser, members} = route.params.userInfo;
 
-  const receiveUser = useMemo(() => {
-    const user = users.find(user => user._id === idReceive);
-
-    return user;
-  }, [users, idReceive]);
+  console.log('MEMBERS >>>>', members);
 
   return (
     <View style={styles.container}>
@@ -111,8 +103,15 @@ export default function ConversationSettings({route, navigation}) {
               style={styles.settingList_item_icon_2}
             />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.5} style={styles.settingList_item}>
-            <Text style={styles.settingList_item_text}>Create group</Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            style={styles.settingList_item}
+            onPress={() =>
+              navigation.navigate('GroupMembers', {
+                members: members,
+              })
+            }>
+            <Text style={styles.settingList_item_text}>See group members</Text>
             <Ionicons
               name="people-sharp"
               style={styles.settingList_item_icon_2}

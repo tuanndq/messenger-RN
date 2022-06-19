@@ -255,8 +255,9 @@ const Chat = ({navigation, route}) => {
                 avatar: current_conversation.avatar,
                 userInfo: {
                   username: current_conversation.title,
-                  idReceive: current_conversation.members[1],
+                  receiveUser: receiveUser,
                   status: 'Active',
+                  members: current_conversation.members,
                 },
                 users: users,
               });

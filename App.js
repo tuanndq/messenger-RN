@@ -34,6 +34,7 @@ import GroupChat from './src/screens/GroupChat/GroupChat';
 import {colors} from './src/theme/colors';
 import {socket} from './src/utils/socket';
 import {WebRTCCall} from './src/screens/WebRTCCall/WebRTCCall';
+import GroupMembers from './src/screens/GroupChat/GroupMembers';
 
 const Tab = createBottomTabNavigator();
 
@@ -213,6 +214,13 @@ const Container = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="GroupMembers"
+          component={GroupMembers}
           options={{
             headerShown: false,
           }}
