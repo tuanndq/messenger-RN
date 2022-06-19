@@ -69,8 +69,12 @@ const Chat = ({navigation, route}) => {
   }, [users, auth]);
 
   const receiveUser = useMemo(() => {
+    const idReceiver = current_conversation.members.findIndex(
+      e => e.idUser !== auth.id,
+    );
+
     const user = users.find(
-      user => user._id === current_conversation.members[1].idUser,
+      user => user._id === current_conversation?.members[idReceiver].idUser,
     );
 
     return user;

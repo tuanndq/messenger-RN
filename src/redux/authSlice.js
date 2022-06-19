@@ -2,7 +2,7 @@ import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {postDataAPI} from '../utils/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {addUser} from './userSlice';
-import {setAlert} from './alertSlice';
+import {setAlert, setLoading} from './alertSlice';
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -29,11 +29,15 @@ export const login = createAsyncThunk(
   'auth/login',
   async (info, {dispatch}) => {
     try {
+      dispatch(setLoading(true));
+
       const res = await postDataAPI('auth/login', info);
 
       await AsyncStorage.setItem('@user_token', res.data.access_token);
 
       await AsyncStorage.setItem('@id', res.data.user._id);
+
+      dispatch(setLoading(false));
 
       return res.data;
     } catch (err) {

@@ -99,8 +99,7 @@ export function WebRTCCall({route, navigation}) {
     }
 
     socket.on('video-call-stop', ({sender, receiver, conversationId}) => {
-      console.log('stop-call');
-      navigation.replace('Chat');
+      navigation.navigate('Chat');
     });
 
     socket.on('video-call-answer', async ({sender, receiver, answer}) => {
@@ -133,8 +132,8 @@ export function WebRTCCall({route, navigation}) {
 
   const sendToPeer = (messageType, payload) => {
     socket.emit(messageType, {
-      sender: sender._id,
-      receiverId: receiver._id,
+      senderId: sender?._id,
+      receiverId: receiver?._id,
       payload,
     });
   };
@@ -179,8 +178,8 @@ export function WebRTCCall({route, navigation}) {
         await pc.current.setLocalDescription(offer);
 
         socket.emit('video-call-start', {
-          senderId: sender._id,
-          senderId: receiver._id,
+          senderId: sender?._id,
+          receiverId: receiver?._id,
           chatBoxId: conversationId,
           offer,
           isVideoCall,
@@ -218,17 +217,17 @@ export function WebRTCCall({route, navigation}) {
   const hangup = () => {
     cleanUp();
     socket.emit('video-call-stop', {
-      senderId: sender._id,
-      receiverId: receiver._id,
+      senderId: sender?._id,
+      receiverId: receiver?._id,
       chatBoxId: conversationId,
     });
-    navigation.replace('DirectMessage');
+    navigation.navigate('Chat');
   };
 
   const mute = () => {
     setIsMic(!isMic);
     socket.emit('video-call-media-active', {
-      receiverId: receiver._id,
+      receiverId: receiver?._id,
       mic: !isMic,
       camera: isCamera,
     });
@@ -237,7 +236,7 @@ export function WebRTCCall({route, navigation}) {
   const hideCamera = () => {
     setIsCamera(!isCamera);
     socket.emit('video-call-media-active', {
-      receiverId: receiver._id,
+      receiverId: receiver?._id,
       camera: !isCamera,
       mic: isMic,
     });
@@ -266,7 +265,7 @@ export function WebRTCCall({route, navigation}) {
   if (receivingCall) {
     return (
       <ReceiveCall
-        senderId={sender._id}
+        senderId={sender?._id}
         remoteInfo={remoteInfo}
         hangup={hangup}
         join={join}

@@ -17,6 +17,7 @@ const Chats = ({navigation}) => {
   const auth = useSelector(state => state.auth);
   const users = useSelector(state => state.user.users);
   const conversations = useSelector(state => state.conversation.conversations);
+  const loading = useSelector(state => state.alert.loading);
 
   const [loggedUser, setLoggedUser] = useState({});
   const [lastMessages, setLastMessages] = useState([]);
