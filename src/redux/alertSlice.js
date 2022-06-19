@@ -4,6 +4,7 @@ const alertSlice = createSlice({
   name: 'alert',
 
   initialState: {
+    loading: false,
     loginError: '',
     registerError: '',
     uploadError: '',
@@ -32,11 +33,15 @@ const alertSlice = createSlice({
           break;
       }
     },
+
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   },
 
   extraReducers: {},
 });
 
 const {actions, reducer} = alertSlice;
-export const {setAlert} = actions;
+export const {setAlert, setLoading} = actions;
 export default reducer;

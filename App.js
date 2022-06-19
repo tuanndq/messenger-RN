@@ -37,7 +37,7 @@ import {WebRTCCall} from './src/screens/WebRTCCall/WebRTCCall';
 
 const Tab = createBottomTabNavigator();
 
-const Home = () => {
+const Home = ({navigation}) => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
 
@@ -46,6 +46,23 @@ const Home = () => {
       dispatch(getUsers(auth.token));
     }
   }, [auth]);
+
+  useEffect(() => {
+    socket.on(
+      'video-call-start',
+      ({senderId, receiverId, chatBoxId, offer, isVideoCall}) => {
+        console.log(senderId, receiverId, chatBoxId, offer, isVideoCall);
+        navigation.push('WebRTCCall', {
+          senderId: receiverId,
+          receiverId: senderId,
+          chatBoxId,
+          isCaller: false,
+          sdp: offer,
+          isVideoCall,
+        });
+      },
+    );
+  }, [socket]);
 
   return (
     <Tab.Navigator
@@ -136,20 +153,24 @@ const Container = () => {
   }, []);
 
   useEffect(() => {
-    socket.on(
-      'video-call-start',
-      ({senderId, receiverId, chatBoxId, offer, isVideoCall}) => {
-        navigation.push('WebRTCCall', {
-          senderId: receiverId,
-          receiverId: senderId,
-          chatBoxId,
-          isCaller: false,
-          sdp: offer,
-          isVideoCall,
-        });
-      },
-    );
-  }, []);
+    const getToken = async () => {
+      const id = await AsyncStorage.getItem('@id');
+
+      if (id) {
+        socket.auth = {
+          userId: id,
+        };
+      }
+
+      socket.connect();
+    };
+
+    getToken();
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [socket]);
 
   return (
     <NavigationContainer>
