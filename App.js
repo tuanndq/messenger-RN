@@ -51,12 +51,12 @@ const Home = ({navigation}) => {
   useEffect(() => {
     socket.on(
       'video-call-start',
-      ({senderId, receiverId, chatBoxId, offer, isVideoCall}) => {
-        console.log(senderId, receiverId, chatBoxId, offer, isVideoCall);
+      ({sender, receiver, conversationId, offer, isVideoCall}) => {
+        console.log(sender, receiver, conversationId, offer, isVideoCall);
         navigation.push('WebRTCCall', {
-          senderId: receiverId,
-          receiverId: senderId,
-          chatBoxId,
+          sender: receiver,
+          receiver: sender,
+          conversationId,
           isCaller: false,
           sdp: offer,
           isVideoCall,
