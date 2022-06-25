@@ -64,17 +64,16 @@ const Chat = ({navigation, route}) => {
 
   const sendUser = useMemo(() => {
     const user = users.find(user => user._id === auth.id);
-
     return user;
   }, [users, auth]);
 
   const receiveUser = useMemo(() => {
-    const idReceiver = current_conversation.members.findIndex(
+    const idReceiver = current_conversation.members?.findIndex(
       e => e.idUser !== auth.id,
     );
 
     const user = users.find(
-      user => user._id === current_conversation?.members[idReceiver].idUser,
+      user => user._id === current_conversation?.members?.[idReceiver].idUser,
     );
 
     return user;
@@ -255,8 +254,9 @@ const Chat = ({navigation, route}) => {
                 avatar: current_conversation.avatar,
                 userInfo: {
                   username: current_conversation.title,
-                  idReceive: current_conversation.members[1],
+                  receiveUser: receiveUser,
                   status: 'Active',
+                  members: current_conversation.members,
                 },
                 users: users,
               });

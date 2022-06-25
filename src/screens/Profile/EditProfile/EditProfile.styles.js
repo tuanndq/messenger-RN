@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: 50,
   },
 
   headerEdit: {
@@ -74,6 +73,7 @@ export const styles = StyleSheet.create({
     height: 150,
     marginVertical: 20,
     borderRadius: 5,
+    alignSelf: 'center',
   },
   textBio: {
     textAlign: 'center',

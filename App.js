@@ -36,6 +36,7 @@ import OutgoingCall from './src/screens/Call/VoiceCall/OutgoingCall';
 import IncomingCall from './src/screens/Call/VoiceCall/IncomingCall';
 import {socket} from './src/utils/socket';
 import {WebRTCCall} from './src/screens/WebRTCCall/WebRTCCall';
+import GroupMembers from './src/screens/GroupChat/GroupMembers';
 
 const Tab = createBottomTabNavigator();
 
@@ -52,12 +53,12 @@ const Home = ({navigation}) => {
   useEffect(() => {
     socket.on(
       'video-call-start',
-      ({senderId, receiverId, chatBoxId, offer, isVideoCall}) => {
-        console.log(senderId, receiverId, chatBoxId, offer, isVideoCall);
+      ({sender, receiver, conversationId, offer, isVideoCall}) => {
+        console.log(sender, receiver, conversationId, offer, isVideoCall);
         navigation.push('WebRTCCall', {
-          senderId: receiverId,
-          receiverId: senderId,
-          chatBoxId,
+          sender: receiver,
+          receiver: sender,
+          conversationId,
           isCaller: false,
           sdp: offer,
           isVideoCall,
@@ -215,6 +216,13 @@ const Container = () => {
         <Stack.Screen
           name="Profile"
           component={Profile}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="GroupMembers"
+          component={GroupMembers}
           options={{
             headerShown: false,
           }}

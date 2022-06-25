@@ -9,25 +9,22 @@ import {
   TouchableOpacity,
   Button,
   TextInput,
+  Alert,
 } from 'react-native';
 import {CheckBox} from 'react-native-elements';
 import {images} from '../../../images';
 import {styles} from './EditProfile.styles';
 import {colors} from '../../../theme/colors';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Toast from 'react-native-toast-message';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 // import { editAttributeUser, upload } from "../../../redux/userSlice";
 import Modal from 'react-native-modal';
-import UserPermissions from '../../../utils/UserPermissions';
 import {getUsers, updateProfile} from '../../../redux/userSlice';
 import {uploadFile} from '../../../redux/uploadSlice';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {validateName} from '../../../utils/validate';
+import {FancyAlert} from 'react-native-expo-fancy-alerts';
 
 const EditProfile = ({navigation, route}) => {
   const {user} = route.params;
@@ -64,8 +61,6 @@ const EditProfile = ({navigation, route}) => {
 
   const handlePickerAvatar = async type => {
     const result = await launchImageLibrary({});
-
-    console.log('AVATAR >>>>>', result);
 
     const uri = result.assets[0].uri;
 

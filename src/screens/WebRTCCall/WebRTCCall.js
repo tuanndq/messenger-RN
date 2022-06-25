@@ -128,13 +128,14 @@ export function WebRTCCall({route, navigation}) {
     return () => {
       cleanUp();
     };
-  }, []);
+  }, [socket]);
 
   const sendToPeer = (messageType, payload) => {
     socket.emit(messageType, {
-      senderId: sender?._id,
-      receiverId: receiver?._id,
+      sender: sender,
+      receiver: receiver,
       payload,
+      isCaller,
     });
   };
 
@@ -142,6 +143,9 @@ export function WebRTCCall({route, navigation}) {
     pc.current = new RTCPeerConnection(configuration);
     const stream = await getStream();
     setLocalStream(stream);
+
+    console.log('LOCAL received the stream call', stream);
+
     pc.current.addStream(stream);
 
     pc.current.onaddstream = e => {
@@ -178,9 +182,9 @@ export function WebRTCCall({route, navigation}) {
         await pc.current.setLocalDescription(offer);
 
         socket.emit('video-call-start', {
-          senderId: sender?._id,
-          receiverId: receiver?._id,
-          chatBoxId: conversationId,
+          sender: sender,
+          receiver: receiver,
+          conversationId: conversationId,
           offer,
           isVideoCall,
         });
@@ -216,10 +220,12 @@ export function WebRTCCall({route, navigation}) {
 
   const hangup = () => {
     cleanUp();
+
     socket.emit('video-call-stop', {
-      senderId: sender?._id,
-      receiverId: receiver?._id,
-      chatBoxId: conversationId,
+      sender: sender,
+      receiver: receiver,
+      conversationId: conversationId,
+      isCaller: isCaller,
     });
     navigation.navigate('Chat');
   };
@@ -227,7 +233,7 @@ export function WebRTCCall({route, navigation}) {
   const mute = () => {
     setIsMic(!isMic);
     socket.emit('video-call-media-active', {
-      receiverId: receiver?._id,
+      receiver: receiver,
       mic: !isMic,
       camera: isCamera,
     });
@@ -236,7 +242,7 @@ export function WebRTCCall({route, navigation}) {
   const hideCamera = () => {
     setIsCamera(!isCamera);
     socket.emit('video-call-media-active', {
-      receiverId: receiver?._id,
+      receiver: receiver,
       camera: !isCamera,
       mic: isMic,
     });
@@ -263,14 +269,7 @@ export function WebRTCCall({route, navigation}) {
   };
 
   if (receivingCall) {
-    return (
-      <ReceiveCall
-        senderId={sender?._id}
-        remoteInfo={remoteInfo}
-        hangup={hangup}
-        join={join}
-      />
-    );
+    return <ReceiveCall remoteInfo={remoteInfo} hangup={hangup} join={join} />;
   }
 
   return (
@@ -291,7 +290,7 @@ export function WebRTCCall({route, navigation}) {
           <RTCView
             objectFit="cover"
             style={{
-              with: '100%',
+              width: '100%',
               height: '100%',
             }}
             streamURL={localStream && localStream.toURL()}
@@ -329,7 +328,10 @@ export function WebRTCCall({route, navigation}) {
         ) : (
           <RTCView
             objectFit="cover"
-            style={{with: '100%', height: '100%'}}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
             streamURL={remoteStream && remoteStream.toURL()}
           />
         )}
