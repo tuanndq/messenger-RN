@@ -240,8 +240,8 @@ const Chat = ({navigation, route}) => {
           onPress={() => {
             dispatch(fetchConversations(auth.id, auth.token));
             navigation.navigate('Chats');
-          }}>
-          {/* <Feather name="chevron-left" style={styles.backIcon} /> */}
+          }}
+        >
           <Image source={images.backButton} style={styles.backIcon} />
         </TouchableOpacity>
 

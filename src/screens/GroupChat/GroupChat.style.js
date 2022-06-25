@@ -43,6 +43,7 @@ export const styles = StyleSheet.create({
   nextBtn: {},
 
   nextBtnText: {
+    marginLeft: 20,
     fontSize: 19,
     fontWeight: '600',
     color: colors.mainColor,
