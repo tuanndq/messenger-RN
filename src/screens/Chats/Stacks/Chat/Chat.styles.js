@@ -4,12 +4,7 @@ import {colors} from '../../../../theme/colors';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 4,
     color: '#ffffff',
-  },
-  iconHeader: {
-    fontSize: 21,
-    color: colors.mainColor,
   },
 
   iconPhone: {
@@ -36,7 +31,6 @@ export const styles = StyleSheet.create({
   },
 
   header: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -76,12 +70,12 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
   },
   footer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginLeft: 5,
     marginRight: 5,
+    paddingVertical: 8,
   },
   preview: {
     position: 'absolute',

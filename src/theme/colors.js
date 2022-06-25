@@ -12,4 +12,5 @@ export const colors = {
   secondColor: "#4267B2",
   redColor: "#dd4d44",
   blackApp: 'rgb(40, 40, 40)',
+  blackFooter: '#323232',
 };

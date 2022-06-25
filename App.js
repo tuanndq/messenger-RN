@@ -32,6 +32,8 @@ import EditProfile from './src/screens/Profile/EditProfile/EditProfile';
 import ConversationSettings from './src/screens/Chats/Stacks/Convesation/ConversationSettings';
 import GroupChat from './src/screens/GroupChat/GroupChat';
 import {colors} from './src/theme/colors';
+import OutgoingCall from './src/screens/Call/VoiceCall/OutgoingCall';
+import IncomingCall from './src/screens/Call/VoiceCall/IncomingCall';
 import {socket} from './src/utils/socket';
 import {WebRTCCall} from './src/screens/WebRTCCall/WebRTCCall';
 import GroupMembers from './src/screens/GroupChat/GroupMembers';
@@ -271,6 +273,20 @@ const Container = () => {
         <Stack.Screen
           name="GroupChat"
           component={GroupChat}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name='OutgoingCall'
+          component={OutgoingCall}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen 
+          name='IncomingCall'
+          component={IncomingCall}
           options={{
             headerShown: false,
           }}

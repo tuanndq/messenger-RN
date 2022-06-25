@@ -63,4 +63,7 @@ export const images = {
   edit_button: require('./images/edit_button.png'),
   more_icon: require('./images/more_icon.png'),
   back_profile: require('./images/back_profile.png'),
+  phone_hangup: require('./images/phone-hangup.png'),
+  incomingDecline: require('./images/incoming-decline.png'),
+  incomingAccept: require('./images/incoming-accept.png'),
 };
