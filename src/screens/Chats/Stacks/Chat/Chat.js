@@ -239,8 +239,8 @@ const Chat = ({navigation, route}) => {
           onPress={() => {
             dispatch(fetchConversations(auth.id, auth.token));
             navigation.navigate('Chats');
-          }}>
-          {/* <Feather name="chevron-left" style={styles.backIcon} /> */}
+          }}
+        >
           <Image source={images.backButton} style={styles.backIcon} />
         </TouchableOpacity>
 
@@ -274,7 +274,7 @@ const Chat = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
 
-        {/* Some action buttons (call, call video) */}
+        {/* Some action buttons (voice call, video call) */}
         <View style={styles.header_actions}>
           <TouchableOpacity onPress={startVoiceCall}>
             <Image source={images.phone} style={styles.iconPhone} />

@@ -10,7 +10,7 @@ import {
 } from 'react-native-webrtc';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import React, {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {ButtonCall} from '../../components/ButtonCall/ButtonCall';
 import ReceiveCall from './ReceiveCall';
 // import {axiosAuth, getAvatarUrl, socket} from '../../../libs';
@@ -276,7 +276,12 @@ export function WebRTCCall({route, navigation}) {
     <View style={styles.container}>
       <View style={[styles.localVideo, styles.video]}>
         {!localStream || !isCamera ? (
-          <View style={styles.center}>
+          <View
+            style={{
+              marginTop: 70,
+              alignSelf: 'center',
+              justifyContent: 'center',
+            }}>
             {/* <Avatar
               size="50px"
               source={{
@@ -301,15 +306,26 @@ export function WebRTCCall({route, navigation}) {
         {!remoteStream || !isRemoteCamera ? (
           <View style={styles.center}>
             {remoteInfo && (
-              <>
-                {/* <Avatar
-                  size="80px"
+              <View
+                style={{
+                  flexDirection: 'column',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
                   source={{
                     uri: remoteInfo.avatar,
                   }}
-                  style={{marginBottom: 15}}
-                /> */}
-                <Text style={{color: '#fff', fontSize: 18}}>
+                  style={{
+                    alignSelf: 'center',
+                    width: 80,
+                    height: 80,
+                    borderRadius: 100,
+                    marginBottom: 10,
+                  }}
+                />
+                <Text
+                  style={{color: '#fff', fontSize: 18, alignSelf: 'center'}}>
                   {remoteInfo.fullName}
                 </Text>
                 {!remoteStream && (
@@ -317,12 +333,15 @@ export function WebRTCCall({route, navigation}) {
                     style={{
                       flexDirection: 'row',
                       marginTop: 15,
+                      justifyContent: 'center',
                     }}>
                     {/* <Spinner size="sm" color="#fff" mr="2" /> */}
-                    <Text style={{color: '#fff'}}>Waiting to join ...</Text>
+                    <Text style={{color: '#fff', alignSelf: 'center'}}>
+                      Waiting to join ...
+                    </Text>
                   </View>
                 )}
-              </>
+              </View>
             )}
           </View>
         ) : (
@@ -332,7 +351,7 @@ export function WebRTCCall({route, navigation}) {
               width: '100%',
               height: '100%',
             }}
-            streamURL={remoteStream && remoteStream.toURL()}
+            streamURL={localStream && localStream.toURL()}
           />
         )}
         <View style={styles.mediaStyle}>
@@ -396,7 +415,7 @@ const styles = StyleSheet.create({
     height: '55%',
   },
   center: {
-    marginTop: 50,
+    marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center',
   },
